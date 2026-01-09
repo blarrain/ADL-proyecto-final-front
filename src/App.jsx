@@ -1,21 +1,33 @@
 import './App.css';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import CardArticulo from './components/CardArticulo.JSX';
+import ProfilePage from './pages/ProfilePage';
+import HomePage from './pages/Home';
+import LoginPage from './pages/LoginPage';
+import Navbar from './components/Navbar';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { useContext } from 'react';
+import { UserContext } from './context/userContext';
+import RegisterPage from './pages/RegisterPage';
+import StorePage from './pages/StorePage';
+import CartPage from './pages/CartPage';
+import ArticlePage from './pages/ArticlePage';
 
 function App() {
+	const { user } = useContext(UserContext)
 	return (
 		<>
-			<Container>
-				<Row>
-					<Col xs={12} sm={8} md={4} lg={3}>
-						<CardArticulo />
-					</Col>
-				</Row>
-			</Container>
+			<Navbar />
+			<Routes>
+				<Route path="/" element={<HomePage />} />
+				<Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
+				<Route path="/login" element={<LoginPage />} />
+				<Route path="/register" element={<RegisterPage />} />
+				<Route path="/store" element={<StorePage />} />
+				<Route path="/cart" element={<CartPage />} />
+				<Route path="/article" element={<ArticlePage />} />
+
+			</Routes>
 		</>
-	);
+	)
 }
 
 export default App;
