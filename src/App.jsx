@@ -10,6 +10,7 @@ import RegisterPage from './pages/RegisterPage';
 import StorePage from './pages/StorePage';
 import CartPage from './pages/CartPage';
 import ArticlePage from './pages/ArticlePage';
+import Footer from './components/Footer';
 
 function App() {
 	const { user } = useContext(UserContext)
@@ -26,6 +27,8 @@ function App() {
 				<Route path="/article" element={<ArticlePage />} />
 
 			</Routes>
+
+			<Footer/>
 		</>
 	)
 }
