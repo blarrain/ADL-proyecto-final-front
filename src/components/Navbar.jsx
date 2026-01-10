@@ -11,47 +11,72 @@ import miLogo from './../assets/img/logoJRB.png';
 
 function CollapsibleExample() {
 
-    const setActiveClass = ({ isActive }) => (isActive ? "active" : undefined);
-    const setActiveStyle = ({ isActive }) => ({
-        color: isActive ? 'green' : '',
-        borderBottom: isActive ? '2px solid green' : 'none',
-        fontWeight: isActive ? 'bold' : ''
-    })
-    return (
-        <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
-            <Container>
-                <Navbar.Brand as={NavLink} to="/" className={setActiveClass} style={setActiveStyle}>
-                    <img src={miLogo} width="30" height="30" className="d-inline-block align-top" alt="Logo de Inicio" />
-                </Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="me-auto">
-                        <Nav.Link as={NavLink} className={setActiveClass} to="/store" style={setActiveStyle}>Tienda</Nav.Link>
-                        <Nav.Link as={NavLink} className={setActiveClass} to="/article" style={setActiveStyle}>Artículos</Nav.Link>
-                        {/* <Nav.Link href="#pricing">Pricing</Nav.Link>
-                        <NavDropdown title="Dropdown" id="collapsible-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">
-                                Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">
-                                Separated link
-                            </NavDropdown.Item>
-                        </NavDropdown> */}
-                    </Nav>
-                    <Nav>
-                        <Nav.Link as={NavLink} to="/login" className={setActiveClass} style={setActiveStyle}>Login</Nav.Link>
-                        <Nav.Link as={NavLink} to="/register" className={setActiveClass} style={setActiveStyle}>Registro</Nav.Link>
-                        <Nav.Link as={NavLink} to="/cart" className={setActiveClass} style={setActiveStyle}>Carrito</Nav.Link>
-                        <Nav.Link as={NavLink} to="/profile" className={setActiveClass} style={setActiveStyle}> Mi Perfil </Nav.Link>
+  const setActiveClass = ({ isActive }) =>
+    isActive ? "nav-link active fw-bold text-success" : "nav-link";
 
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
-    );
+  const setActiveStyle = ({ isActive }) => ({
+    borderBottom: isActive ? "2px solid green" : "none"
+  });
+
+  return (
+    <Navbar expand="lg" bg="light" className="navbar-vivero shadow-sm sticky-top">
+      <Container>
+
+        {/* LOGO */}
+        <Navbar.Brand as={NavLink} to="/" className="fw-bold text-success">
+          <img
+            src={miLogo}
+            width="50"
+            height="50"
+            className="me-2"
+            alt="Logo"
+          />
+          Vivero JRB
+        </Navbar.Brand>
+
+        <Navbar.Toggle />
+        <Navbar.Collapse>
+
+          {/* MENÚ IZQUIERDO */}
+          <Nav className="me-auto gap-3">
+            <NavLink to="/store" className={setActiveClass} style={setActiveStyle}>
+              Tienda
+            </NavLink>
+
+            <NavLink to="/article" className={setActiveClass} style={setActiveStyle}>
+              Artículos
+            </NavLink>
+          </Nav>
+
+          {/* MENÚ DERECHO */}
+          <Nav className="align-items-center gap-3">
+
+            <NavLink to="/cart" className={setActiveClass} style={setActiveStyle}>
+              🛒 Carrito
+            </NavLink>
+
+            <NavLink to="/login" className={setActiveClass} style={setActiveStyle}>
+              Login
+            </NavLink>
+
+            <NavLink
+              to="/register"
+              className="btn btn-success text-white px-3"
+            >
+              Registro
+            </NavLink>
+
+            <NavLink to="/profile" className={setActiveClass} style={setActiveStyle}>
+              Mi Perfil
+            </NavLink>
+
+          </Nav>
+
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
 }
+
 
 export default CollapsibleExample

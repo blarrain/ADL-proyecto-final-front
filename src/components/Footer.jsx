@@ -1,8 +1,8 @@
 const Footer = () => {
   return (
-    <footer className=" col-12 py-4 text-center  text-primary">
+    <footer className=" footer-vivero text-center">
       <div className="row justify-content-center">
-        © 2026 - Vivero JRB - Todos los derechos reservados
+        <p>© 2026 - Vivero JRB - Todos los derechos reservados</p>
       </div>
     </footer>
   );

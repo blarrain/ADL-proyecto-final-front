@@ -12,25 +12,34 @@ import CartPage from './pages/CartPage';
 import ArticlePage from './pages/ArticlePage';
 import Footer from './components/Footer';
 
+
+import Container from 'react-bootstrap/Container';
+
 function App() {
 	const { user } = useContext(UserContext)
 	return (
-		<>
-			<Navbar />
-			<Routes>
-				<Route path="/" element={<HomePage />} />
-				<Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
-				<Route path="/login" element={<LoginPage />} />
-				<Route path="/register" element={<RegisterPage />} />
-				<Route path="/store" element={<StorePage />} />
-				<Route path="/cart" element={<CartPage />} />
-				<Route path="/article" element={<ArticlePage />} />
+    <>
+	<div className="page-wrapper">
+      <Container>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/profile"
+            element={user ? <ProfilePage /> : <Navigate to="/login" />}
+          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/store" element={<StorePage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/article" element={<ArticlePage />} />
+        </Routes>
 
-			</Routes>
-
-			<Footer/>
-		</>
-	)
+        <Footer />
+      </Container>
+	  </div>
+    </>
+  );
 }
 
 export default App;
