@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Form, Button, Image } from "react-bootstrap"
 import Swal from "sweetalert2";
 
 const LoginPage = () => {
-      const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
 
   const validarDatos = (e) => {
@@ -25,10 +25,10 @@ const LoginPage = () => {
   };
 
 
-    return (
-         <Container className="my-5">
+  return (
+    <Container className="my-5">
       <Row className="justify-content-center">
-        <Col lg={10}>
+        <Col>
           <Card className="shadow">
             <Row className="g-0">
 
@@ -69,6 +69,10 @@ const LoginPage = () => {
                   <Button type="submit" variant="primary" className="w-100">
                     Iniciar sesión
                   </Button>
+
+                  <label className="text-center mt-3 w-100">
+                    Si no tienes cuenta puedes <Card.Link href="/register"> Registrarte</Card.Link>
+                  </label>
                 </Form>
 
               </Col>

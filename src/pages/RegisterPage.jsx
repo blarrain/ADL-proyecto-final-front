@@ -45,7 +45,7 @@ const LoginPage = () => {
     return (
         <Container className="my-5">
             <Row className="justify-content-center">
-                <Col lg={12}>
+                <Col>
                     <Card className="shadow">
                         <Row className="g-0">
 
@@ -98,6 +98,12 @@ const LoginPage = () => {
                                     <Button type="submit" variant="primary" className="w-100">
                                         Crear Cuenta
                                     </Button>
+
+
+                                    <label className="text-center mt-3 w-100">
+                                        ¿Tienes cuenta?, <Card.Link href="/login"> Inicia Sesión</Card.Link>
+                                    </label>
+
                                 </Form>
 
                             </Col>

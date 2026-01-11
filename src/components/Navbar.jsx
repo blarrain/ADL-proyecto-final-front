@@ -59,13 +59,10 @@ function CollapsibleExample() {
               Login
             </NavLink>
 
-            <NavLink
-              to="/register"
-              className="btn btn-success text-white px-3"
-            >
+            {/*   <NavLink to="/register" className={setActiveClass} style={setActiveStyle}   >
               Registro
             </NavLink>
-
+ */}
             <NavLink to="/profile" className={setActiveClass} style={setActiveStyle}>
               Mi Perfil
             </NavLink>

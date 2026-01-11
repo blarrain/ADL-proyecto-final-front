@@ -14,30 +14,32 @@ import Footer from './components/Footer';
 
 
 import Container from 'react-bootstrap/Container';
+import DetailArticle from './pages/DetailArticle';
 
 function App() {
-	const { user } = useContext(UserContext)
-	return (
+  const { user } = useContext(UserContext)
+  return (
     <>
-	<div className="page-wrapper">
-      <Container>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route
-            path="/profile"
-            element={user ? <ProfilePage /> : <Navigate to="/login" />}
-          />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/store" element={<StorePage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/article" element={<ArticlePage />} />
-        </Routes>
+      <div className="page-wrapper">
+        <Container>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route
+              path="/profile"
+              element={user ? <ProfilePage /> : <Navigate to="/login" />}
+            />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/store" element={<StorePage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/article" element={<ArticlePage />} />
+            <Route path="/detail/:id" element={<DetailArticle />} />
+          </Routes>
 
-        <Footer />
-      </Container>
-	  </div>
+          <Footer />
+        </Container>
+      </div>
     </>
   );
 }

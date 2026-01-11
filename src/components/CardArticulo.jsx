@@ -1,14 +1,21 @@
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
+import { useNavigate } from 'react-router-dom';
 // import { useContext } from 'react';
 // import { CartContext } from '../context/CartContext';
 
 const CardArticulo = (props) => {
-	// const { addToCart } = useContext(CartContext);
-	const price = props.price ?? 0;
+  // const { addToCart } = useContext(CartContext);
+  const price = props.price ?? 0;
 
-	return (
+  const navigate = useNavigate()
+  const verDetalle = (id) => {
+    console.log(id)
+    navigate(`/detail/${id}`)
+  }
+
+  return (
     // <Card key={props.id} className='mb-4'>
     // 	<Card.Img variant='top' src={props.img} />
     // 	<Card.Body>
@@ -28,13 +35,13 @@ const CardArticulo = (props) => {
     // 		</Stack>
     // 	</Card.Body>
     // </Card>
-    <Card className="mb-4">
+    <Card className="mt-0">
       <Card.Img variant="top" src={props.img} />
       <Card.Body>
         <Card.Title>{props.name}</Card.Title>
         <Card.Text>${price.toLocaleString("es-CL")}</Card.Text>
-        <Card.Link href={"/articulo/" + props.id}>Ver detalles</Card.Link>
-
+        {/* <Card.Link href={"/articulo/" + props.id}>Ver detalles</Card.Link> */}
+        <Card.Link onClick={() => verDetalle(props.id)}>Ver detalles </Card.Link>
         <Stack direction="horizontal" className="justify-content-between mt-4">
           <Button variant="outline-primary">
             <i className="bi bi-heart" title="Agregar a favoritos"></i>
