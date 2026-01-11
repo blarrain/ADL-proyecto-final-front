@@ -18,11 +18,38 @@ const CartProvider = ({ children }) => {
 		});
 	};
 
+	const sumaCart = (id) => {
+    setCart(
+      cart.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
+  };
+
+  const restaCart = (id) => {
+    setCart(cart
+      .map(item =>
+        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+      )
+      .filter(item => item.quantity > 0)
+    );
+  };
+
+    const total = cart.reduce((sumAcum, item) => sumAcum + item.price * item.quantity, 0);
 	return (
-		<CartContext.Provider value={{ cart, setCart, addToCart }}>
-			{children}
-		</CartContext.Provider>
-	);
+    <CartContext.Provider
+      value={{
+        cart,
+        setCart,
+        addToCart,
+        sumaCart,
+        restaCart,
+        total,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
 };
 
 export default CartProvider;

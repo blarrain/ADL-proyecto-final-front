@@ -160,3 +160,28 @@ export const articulos = [
     fecha_creacion: "2025-01-10"
   }
 ];
+
+
+export const artCart = [
+  {
+    id_articulo: "1",
+    nombre: "Golden Berry (Physalis)",
+    price: 5990,
+    count: 1,
+    img: "https://images.pexels.com/photos/5945659/pexels-photo-5945659.jpeg",
+  },
+  {
+    id_articulo: "4",
+    nombre: "Gladiolo",
+    price: 4990,
+    count: 1,
+    img: "https://images.pexels.com/photos/1379636/pexels-photo-1379636.jpeg",
+  },
+  {
+    id_articulo: "10",
+    nombre: "salame",
+    price: 26990,
+    count: 1,
+    img: "https://images.pexels.com/photos/5945746/pexels-photo-5945746.jpeg",
+  },
+];
