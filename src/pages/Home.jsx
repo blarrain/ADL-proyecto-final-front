@@ -2,11 +2,13 @@ import React from 'react'
 
 import CardArticulo from "../components/CardArticulo";
 import {articulos} from "../assets/data/datos.js";
+import Header from '../components/Header.jsx';
 
 const HomePage = () => {
     return (
       <div>
         <main class="container">
+          <Header/>
           <section class="row">
             {articulos.map((art) => (
               <article
