@@ -6,6 +6,7 @@ const AllArticulosStack = () => {
 	return (
 		<div>
 			<h2>Todos los artículos</h2>
+            <div className='fw-bold'>ID - Nombre</div>
 			{articulos.map((art) => (
 				<SingleArticuloRow
 					key={art.id_articulo}
