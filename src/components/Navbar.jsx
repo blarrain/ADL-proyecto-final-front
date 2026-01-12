@@ -52,7 +52,7 @@ function CollapsibleExample() {
           <Nav className="align-items-center gap-3">
 
             <NavLink to="/cart" className={setActiveClass} style={setActiveStyle}>
-              🛒 Carrito
+              <i class="bi bi-cart"></i> Carrito
             </NavLink>
 
             <NavLink to="/login" className={setActiveClass} style={setActiveStyle}>

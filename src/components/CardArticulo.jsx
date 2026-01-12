@@ -35,7 +35,7 @@ const CardArticulo = (props) => {
     // 		</Stack>
     // 	</Card.Body>
     // </Card>
-    <Card className="mt-0">
+    <Card className="mt-0 h-100 shadow-sm">
       <Card.Img variant="top" src={props.img} />
       <Card.Body>
         <Card.Title>{props.name}</Card.Title>

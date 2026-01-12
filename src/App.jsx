@@ -13,15 +13,12 @@ import ArticlePage from './pages/ArticlePage';
 import Footer from './components/Footer';
 
 
-import Container from 'react-bootstrap/Container';
 import DetailArticle from './pages/DetailArticle';
 
 function App() {
   const { user } = useContext(UserContext)
   return (
     <>
-      <div className="page-wrapper">
-        <Container>
           <Navbar />
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -38,8 +35,6 @@ function App() {
           </Routes>
 
           <Footer />
-        </Container>
-      </div>
     </>
   );
 }

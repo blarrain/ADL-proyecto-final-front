@@ -42,7 +42,7 @@ const CartPage = () => {
   return (
     <Container className="py-5">
       <h2 className="mb-4 text-success">
-        <i className="bi bi-cart4 me-2"></i>
+        <i className="bi bi-cart me-2"></i>
         Carrito de compras
       </h2>
 
@@ -72,11 +72,6 @@ const CartPage = () => {
                       <Button
                         variant="outline-danger"
                         size="sm"
-                        style={{
-                          width: "36px",
-                          height: "36px",
-                          borderRadius: "8px",
-                        }}
                         disabled
                       >
                         −
@@ -87,11 +82,6 @@ const CartPage = () => {
                       <Button
                         variant="outline-primary"
                         size="sm"
-                        style={{
-                          width: "36px",
-                          height: "36px",
-                          borderRadius: "8px",
-                        }}
                         disabled
                       >
                         +
