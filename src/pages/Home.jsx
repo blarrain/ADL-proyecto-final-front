@@ -11,7 +11,7 @@ const HomePage = () => {
 			<Header />
 			<main className='my-5'>
 				<Container>
-          <h2>Artículos destacados</h2>
+          <h2>Últimos artículos de la tienda</h2>
 					<Row className='row-gap-4 my-4'>
 						{articulos.map((art) => (
 							<Col xs={12} sm={8} md={6} lg={4}>

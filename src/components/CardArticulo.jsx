@@ -16,12 +16,12 @@ const CardArticulo = (props) => {
   }
 
   return (
-    // <Card key={props.id} className='mb-4'>
-    // 	<Card.Img variant='top' src={props.img} />
+    // <Card key={id} className='mb-4'>
+    // 	<Card.Img variant='top' src={img} />
     // 	<Card.Body>
-    // 		<Card.Title>{props.name}</Card.Title>
-    // 		<Card.Text>${props.price.toLocaleString('es-CL')}</Card.Text>
-    // 		<Card.Link href={'/articulo/' + props.id}>Ver detalles</Card.Link>
+    // 		<Card.Title>{name}</Card.Title>
+    // 		<Card.Text>${price.toLocaleString('es-CL')}</Card.Text>
+    // 		<Card.Link href={'/articulo/' + id}>Ver detalles</Card.Link>
     // 		<Stack direction='horizontal' className='justify-content-between mt-4'>
     // 			<Button variant='outline-primary' >
     // 				<i className='bi bi-heart' title='Agregar a favoritos'></i>
@@ -35,7 +35,7 @@ const CardArticulo = (props) => {
     // 		</Stack>
     // 	</Card.Body>
     // </Card>
-    <Card className="mt-0 h-100 shadow-sm">
+    <Card className="mt-0 h-100 shadow-sm border-0">
       <Card.Img variant="top" src={props.img} />
       <Card.Body>
         <Card.Title>{props.name}</Card.Title>
