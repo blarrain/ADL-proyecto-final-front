@@ -1,9 +1,10 @@
 import React from 'react'
+import AllArticulosStack from '../components/AllArticulosStack'
 
 const ArticlePage = () => {
     return (
         <div>
-            Articulos (Agregar, editar, listar y eliminar)
+            <AllArticulosStack />
         </div>
     )
 }
