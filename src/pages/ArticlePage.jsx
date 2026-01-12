@@ -4,7 +4,6 @@ const ArticlePage = () => {
     return (
         <div>
             Articulos (Agregar, editar, listar y eliminar)
-
         </div>
     )
 }

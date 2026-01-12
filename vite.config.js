@@ -10,14 +10,13 @@ export default defineConfig({
 	plugins: [react()],
 	resolve: {
 		alias: {
-			'@': path.resolve(__dirname, './src'),
 			'@scss': path.resolve(__dirname, './src/assets/scss'),
-			'@img': path.resolve(__dirname, './src/assets/img'),
 		},
 	},
 	css: {
 		preprocessorOptions: {
 			scss: {
+				quietDeps: true,
 				silenceDeprecations: [
 					'import',
 					'mixed-decls',
