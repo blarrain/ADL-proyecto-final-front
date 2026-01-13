@@ -74,19 +74,19 @@ const ProfilePage = () => {
 								<Button
 									disabled
 									variant='outline-primary'
-									// onClick={() => allowProfileEdit()}
+								// onClick={() => allowProfileEdit()}
 								>
-									Editar perfil <i class='bi bi-pencil-square'></i>
+									Editar perfil <i className='bi bi-pencil-square'></i>
 								</Button>
 								<Button
 									variant='danger'
-									// onClick={() => logOut()}
+								// onClick={() => logOut()}
 								>
 									Cerrar sesión
 								</Button>
 							</Stack>
 						</Form>
-					:	<p>Inicia sesión para ver tu perfil</p>}
+						: <p>Inicia sesión para ver tu perfil</p>}
 					{/* <p className='fs-5'><strong>Nombre:</strong></p>
 					<p className='fs-5'><strong>Fecha de nacimiento:</strong></p>
 					<p className='fs-5'><strong>Teléfono:</strong></p>
