@@ -59,13 +59,14 @@ function CollapsibleExample() {
               Login
             </NavLink>
 
-            {/*   <NavLink to="/register" className={setActiveClass} style={setActiveStyle}   >
-              Registro
-            </NavLink>
- */}
-            <NavLink to="/profile" className={setActiveClass} style={setActiveStyle}>
-              Mi Perfil
-            </NavLink>
+            <NavDropdown title="Mi Perfil" id="collapsible-nav-dropdown">
+              <NavDropdown.Item as={NavLink} to="/profile" className={setActiveClass} style={setActiveStyle}>Mis Datos</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/favorite" className={setActiveClass} style={setActiveStyle}> Mis Favoritos  </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Cerrar Sesión
+              </NavDropdown.Item>
+            </NavDropdown>
 
           </Nav>
 

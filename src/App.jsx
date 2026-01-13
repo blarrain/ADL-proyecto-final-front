@@ -14,27 +14,29 @@ import Footer from './components/Footer';
 
 
 import DetailArticle from './pages/DetailArticle';
+import FavoritesPages from './pages/FavoritesPage';
 
 function App() {
   const { user } = useContext(UserContext)
   return (
     <>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route
-              path="/profile"
-              element={user ? <ProfilePage /> : <Navigate to="/login" />}
-            />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/store" element={<StorePage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/article" element={<ArticlePage />} />
-            <Route path="/detail/:id" element={<DetailArticle />} />
-          </Routes>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/profile"
+          element={user ? <ProfilePage /> : <Navigate to="/login" />}
+        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/store" element={<StorePage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/article" element={<ArticlePage />} />
+        <Route path="/favorite" element={<FavoritesPages />} />
+        <Route path="/detail/:id" element={<DetailArticle />} />
+      </Routes>
 
-          <Footer />
+      <Footer />
     </>
   );
 }
