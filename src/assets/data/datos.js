@@ -185,3 +185,8 @@ export const artCart = [
     img: "https://images.pexels.com/photos/5945746/pexels-photo-5945746.jpeg",
   },
 ];
+
+export const categorias = [
+  { id: 1, nombre: "Plantas" },
+  { id: 2, nombre: "Árboles Pequeños" },
+];

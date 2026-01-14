@@ -1,24 +1,80 @@
-import React from 'react'
-import Col from 'react-bootstrap/esm/Col'
-import Container from 'react-bootstrap/esm/Container'
-import Row from 'react-bootstrap/esm/Row'
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Stack from 'react-bootstrap/Stack';
+import Col from 'react-bootstrap/esm/Col';
+import Container from 'react-bootstrap/esm/Container';
+import Row from 'react-bootstrap/esm/Row';
 import CardArticulo from './../components/CardArticulo.jsx';
 import Header from '../components/Header.jsx';
+import { articulos, categorias } from '../assets/data/datos.js';
 
 const StorePage = () => {
-    return (
-        <div>
-            <Header h1Text='Tienda' pText='Todos los artículos' />
-            <Container>
-                <Row>
-                    <Col xs={12} sm={8} md={4} lg={3}>
-                        <CardArticulo />
-                    </Col>
-                </Row>
-            </Container>
+	return (
+		<div>
+			<Header h1Text='Tienda' pText='Todos los artículos' />
+			<Container fluid className='bd-layout py-3'>
+				<aside className='bd-sidebar sticky-top py-3 z-n1'>
+					<h2>Filtros</h2>{' '}
+					<Form.Label htmlFor='minPrice'>Precio mínimo</Form.Label>
+					<Stack direction='horizontal' gap={3} className='mb-3'>
+						<InputGroup>
+							<InputGroup.Text>$</InputGroup.Text>
+							<Form.Control
+								aria-label='Precio mínimo'
+								id='minPrice'
+								type='number'
+								min={0}
+								disabled
+								readOnly
+							/>
+						</InputGroup>
+						<Button variant='outline-primary disabled'>Filtrar</Button>
+					</Stack>
+					<Form.Label htmlFor='minPrice'>Precio máximo</Form.Label>
+					<Stack direction='horizontal' gap={3} className='mb-5'>
+						<InputGroup>
+							<InputGroup.Text>$</InputGroup.Text>
+							<Form.Control
+								aria-label='Precio máximo'
+								id='maxPrice'
+								type='number'
+								min={0}
+								disabled
+								readOnly
+							/>
+						</InputGroup>
+						<Button variant='outline-primary disabled'>Filtrar</Button>
+					</Stack>
+					<h3>Categoría</h3>
+					{categorias.map((cat) => (
+						<Form.Check
+							disabled
+							key={cat.id}
+							type={'checkbox'}
+							label={cat.nombre}
+							id={cat.nombre}
+						/>
+					))}
+				</aside>
+				<main className='bd-main py-3'>
+					<Row className='row-gap-4'>
+						{articulos.map((art) => (
+							<Col xs={12} sm={8} md={6} lg={4}>
+								<CardArticulo
+									key={art.id_articulo}
+									id={art.id_articulo}
+									name={art.nombre}
+									img={art.imagen_url}
+									price={art.precio}
+								/>
+							</Col>
+						))}
+					</Row>
+				</main>
+			</Container>
+		</div>
+	);
+};
 
-        </div>
-    )
-}
-
-export default StorePage
+export default StorePage;

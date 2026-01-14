@@ -1,3 +1,27 @@
 $primary: #2e7d32;
 
-@import "bootstrap/scss/bootstrap";
+@import 'bootstrap/scss/bootstrap';
+
+@media (min-width: 992px) {
+	.bd-layout {
+		display: grid;
+		grid-template-areas: 'sidebar main';
+		grid-template-columns: 1fr 5fr;
+		gap: 1.5rem;
+	}
+    .bd-sidebar {
+        top: 5rem;
+        // display: block !important;
+        height: calc(100vh - 6rem);
+        padding-left: .25rem;
+        margin-left: -.25rem;
+        overflow-y: auto;
+    }
+}
+.bd-sidebar {
+	grid-area: sidebar;
+}
+
+.bd-main {
+	grid-area: main;
+}
