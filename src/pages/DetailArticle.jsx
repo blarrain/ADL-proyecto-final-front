@@ -1,13 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button, Card, Col, Container, Form, Image, Row } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { articulos } from "../assets/data/datos";
+import { CartContext } from "../context/CartContext";
 
 const DetailArticle = () => {
+     const { addToCart } = useContext(CartContext);
     const { id } = useParams()
 
-    /* Mientras se usa la ID y se le resta 1 para buscar en el arreglo, cuando se habilite el backend se buscará directo por ID */
-    const detalleArticulo = articulos[id - 1];
+    const detalleArticulo = articulos.find(
+        (a) => a.id_articulo === Number(id)
+    );
+    const handleAddToCart = () => {
+      addToCart({
+        id_articulo: detalleArticulo.id_articulo,
+        nombre: detalleArticulo.nombre,
+        precio: detalleArticulo.precio,
+        imagen_url: detalleArticulo.imagen_url,
+      });
+    };
 
     return (
         <Container className="my-5 p-0 min">
@@ -45,7 +56,7 @@ const DetailArticle = () => {
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Button variant="primary" className="w-100">
+                            <Button variant="primary" className="w-100" onClick={handleAddToCart}>
                                 Agregar al carrito <i className="bi bi-cart-plus"></i>
                             </Button>
                         </Form.Group>
