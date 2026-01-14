@@ -6,12 +6,15 @@ import './assets/scss/main.scss'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom';
 import UserProvider from './context/userContext.jsx';
+import CartProvider from "./context/CartContext";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <UserProvider>
-        <App />
+        <CartProvider>
+          <App />
+        </CartProvider>
       </UserProvider>
     </BrowserRouter>
   </StrictMode>,

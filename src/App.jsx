@@ -19,7 +19,7 @@ import FavoritesPages from './pages/FavoritesPage';
 function App() {
   const { user } = useContext(UserContext)
   return (
-    <>
+    <div className="d-flex flex-column min-vh-100">
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -37,7 +37,7 @@ function App() {
       </Routes>
 
       <Footer />
-    </>
+    </div>
   );
 }
 
