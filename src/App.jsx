@@ -18,22 +18,20 @@ import FavoritesPages from './pages/FavoritesPage';
 
 function App() {
   const { user } = useContext(UserContext)
+
   return (
     <div className="d-flex flex-column min-vh-100">
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route
-          path="/profile"
-          element={user ? <ProfilePage /> : <Navigate to="/login" />}
-        />
+        <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/store" element={<StorePage />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/article" element={<ArticlePage />} />
-        <Route path="/favorite" element={<FavoritesPages />} />
-        <Route path="/detail/:id" element={<DetailArticle />} />
+        <Route path="/store" element={user ? <StorePage /> : <Navigate to="/login" />} />
+        <Route path="/cart" element={user ? <CartPage /> : <Navigate to="/login" />} />
+        <Route path="/article" element={user ? <ArticlePage /> : <Navigate to="/login" />} />
+        <Route path="/favorite" element={user ? <FavoritesPages /> : <Navigate to="/login" />} />
+        <Route path="/detail/:id" element={user ? <DetailArticle /> : <Navigate to="/login" />} />
       </Routes>
 
       <Footer />

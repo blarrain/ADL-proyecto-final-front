@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 
 import Container from 'react-bootstrap/Container';
@@ -7,9 +7,11 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import miLogo from './../assets/img/logoJRB.png';
+import { UserContext } from '../context/userContext';
 
 
 function CollapsibleExample() {
+  const { user, token, logout } = useContext(UserContext)
 
   const setActiveClass = ({ isActive }) =>
     isActive ? "nav-link active fw-bold text-success" : "nav-link";
@@ -39,34 +41,36 @@ function CollapsibleExample() {
 
           {/* MENÚ IZQUIERDO */}
           <Nav className="me-auto gap-3">
-            <NavLink to="/store" className={setActiveClass} style={setActiveStyle}>
+            {token && user?.rol == 'cliente' ? <NavLink to="/store" className={setActiveClass} style={setActiveStyle}>
               Tienda
-            </NavLink>
+            </NavLink> : ''}
 
-            <NavLink to="/article" className={setActiveClass} style={setActiveStyle}>
+
+            {token && user?.rol == 'admin' ? <NavLink to="/article" className={setActiveClass} style={setActiveStyle}>
               Artículos
-            </NavLink>
+            </NavLink> : ''}
           </Nav>
 
           {/* MENÚ DERECHO */}
           <Nav className="align-items-center gap-3">
 
-            <NavLink to="/cart" className={setActiveClass} style={setActiveStyle}>
+            {token && user?.rol == 'cliente' ? <NavLink to="/cart" className={setActiveClass} style={setActiveStyle}>
               <i className="bi bi-cart"></i> Carrito
-            </NavLink>
+            </NavLink> : ''}
 
-            <NavLink to="/login" className={setActiveClass} style={setActiveStyle}>
+            {!token ? <NavLink to="/login" className={setActiveClass} style={setActiveStyle}>
               Login
-            </NavLink>
+            </NavLink> : ''}
 
-            <NavDropdown title="Mi Perfil" id="collapsible-nav-dropdown">
+            {token ? <NavDropdown title="Mi Perfil" id="collapsible-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/profile" className={setActiveClass} style={setActiveStyle}>Mis Datos</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/favorite" className={setActiveClass} style={setActiveStyle}> Mis Favoritos  </NavDropdown.Item>
+              {user?.rol == 'cliente' ? <NavDropdown.Item as={NavLink} to="/favorite" className={setActiveClass} style={setActiveStyle}> Mis Favoritos  </NavDropdown.Item> : ''}
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
+              <NavDropdown.Item onClick={logout}>
+
                 Cerrar Sesión
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> : ''}
 
           </Nav>
 

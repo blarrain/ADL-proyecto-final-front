@@ -14,11 +14,10 @@ const CardArticulo = (props) => {
 
   const navigate = useNavigate()
   const verDetalle = (id) => {
-    console.log(id)
     navigate(`/detail/${id}`)
   }
 
-    const handleAddToCart = () => {
+  const handleAddToCart = () => {
     addToCart({
       id_articulo: props.id,
       nombre: props.name,
@@ -28,7 +27,7 @@ const CardArticulo = (props) => {
   };
 
   return (
-   
+
     <Card className="mt-0 h-100 shadow-sm border-0">
       <Card.Img variant="top" src={props.img} />
       <Card.Body>

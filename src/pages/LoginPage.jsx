@@ -1,28 +1,35 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Container, Row, Col, Card, Form, Button, Image } from "react-bootstrap";
 import Swal from "sweetalert2";
+import { UserContext } from "../context/userContext";
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
 
-  const validarDatos = (e) => {
+  const { login, email, password, setEmail, setPassword, user, msgError } = useContext(UserContext);
+
+  function verificaDatos(e) {
     e.preventDefault();
+    login()
+  }
 
-    if (!email.trim() || !pass.trim()) {
-      Swal.fire("Error", "Debe ingresar todos los campos", "error");
-      return;
-    }
-
-    if (pass.length < 6) {
-      Swal.fire("Error", "Contraseña mínimo 6 caracteres", "error");
-      return;
-    }
-
-    Swal.fire("Éxito", "Ingreso correcto 🍕", "success");
-    setEmail("");
-    setPass("");
-  };
+  /*  const validarDatos = (e) => {
+     e.preventDefault();
+ 
+     if (!email.trim() || !password.trim()) {
+       Swal.fire("Error", "Debe ingresar todos los campos", "error");
+       return;
+     }
+ 
+     if (password.length < 6) {
+       Swal.fire("Error", "Contraseña mínimo 6 caracteres", "error");
+       return;
+     }
+ 
+     Swal.fire("Éxito", "Ingreso correcto 🍕", "success");
+     setEmail("");
+     setPass("");
+   }; */
 
 
   return (
@@ -47,7 +54,7 @@ const LoginPage = () => {
                   Ingreso de clientes
                 </h3>
 
-                <Form onSubmit={validarDatos}>
+                <Form onSubmit={verificaDatos}>
                   <Form.Group className="mb-3">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
@@ -62,14 +69,18 @@ const LoginPage = () => {
                     <Form.Control
                       type="password"
                       placeholder="Ingrese contraseña"
-                      onChange={(e) => setPass(e.target.value)}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </Form.Group>
 
                   <Button type="submit" variant="primary" className="w-100">
                     Iniciar sesión
                   </Button>
-
+                  {msgError != "" && (
+                    <div style={{ color: 'red', marginTop: '10px', textAlign: 'center' }}>
+                      {msgError}
+                    </div>
+                  )}
                   <label className="text-center mt-3 w-100">
                     Si no tienes cuenta puedes <Card.Link href="/register"> Registrarte</Card.Link>
                   </label>
