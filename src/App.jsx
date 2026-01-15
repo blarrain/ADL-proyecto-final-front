@@ -15,6 +15,7 @@ import Footer from './components/Footer';
 
 import DetailArticle from './pages/DetailArticle';
 import FavoritesPages from './pages/FavoritesPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   const { user } = useContext(UserContext)
@@ -30,8 +31,10 @@ function App() {
         <Route path="/store" element={user ? <StorePage /> : <Navigate to="/login" />} />
         <Route path="/cart" element={user ? <CartPage /> : <Navigate to="/login" />} />
         <Route path="/article" element={user ? <ArticlePage /> : <Navigate to="/login" />} />
-        <Route path="/favorite" element={user ? <FavoritesPages /> : <Navigate to="/login" />} />
+        <Route path="/favorite" element={user ? <NotFoundPage /> : <Navigate to="/login" />} />
+        {/* <Route path="/favorite" element={user ? <FavoritesPages /> : <Navigate to="/login" />} /> */}
         <Route path="/detail/:id" element={user ? <DetailArticle /> : <Navigate to="/login" />} />
+        <Route path="*" element={<NotFoundPage />} /> {/* /404 */}
       </Routes>
 
       <Footer />
