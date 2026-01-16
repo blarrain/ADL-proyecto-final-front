@@ -1,4 +1,18 @@
-$primary: #2e7d32;
+// 1. Importaciones base
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+$primary: $green-600;
+
+$link-color: $primary;
+$link-hover-color: shade-color($primary, 20%);
+
+$custom-colors: (
+	'primary': $primary,
+	'pink': $pink,
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
 
 @import 'bootstrap/scss/bootstrap';
 
@@ -9,14 +23,13 @@ $primary: #2e7d32;
 		grid-template-columns: 1fr 5fr;
 		gap: 1.5rem;
 	}
-    .bd-sidebar {
-        top: 5rem;
-        // display: block !important;
-        height: calc(100vh - 6rem);
-        padding-left: .25rem;
-        margin-left: -.25rem;
-        overflow-y: auto;
-    }
+	.bd-sidebar {
+		top: 5rem;
+		height: calc(100vh - 6rem);
+		padding-left: 0.25rem;
+		margin-left: -0.25rem;
+		overflow-y: auto;
+	}
 }
 .bd-sidebar {
 	grid-area: sidebar;
@@ -24,4 +37,12 @@ $primary: #2e7d32;
 
 .bd-main {
 	grid-area: main;
+}
+
+.navbar-vivero + * {
+	min-height: 100vh;
+}
+
+.card-link {
+	cursor: pointer;
 }

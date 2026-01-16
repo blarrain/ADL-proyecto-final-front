@@ -1,73 +1,103 @@
-import React, { useContext } from 'react'
-import { Button, Card, Col, Container, Form, Image, Row } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
-import { articulos } from "../assets/data/datos";
-import { CartContext } from "../context/CartContext";
+import { useContext, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Ratio from 'react-bootstrap/Ratio';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Image from 'react-bootstrap/Image';
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import { useParams } from 'react-router-dom';
+import { articulos, categorias } from '../assets/data/datos';
+import { CartContext } from '../context/CartContext';
+import { useEffect } from 'react';
+import CardArticulo from '../components/CardArticulo';
+import RowCardArticulosFiltrados from '../components/RowCardArticulosFiltrados';
 
 const DetailArticle = () => {
-     const { addToCart } = useContext(CartContext);
-    const { id } = useParams()
+	const { addToCart } = useContext(CartContext);
+	const [article, setArticle] = useState(null);
+	const [category, setCategory] = useState(null);
+	const { id } = useParams();
 
-    const detalleArticulo = articulos.find(
-        (a) => a.id_articulo === Number(id)
-    );
-    const handleAddToCart = () => {
-      addToCart({
-        id_articulo: detalleArticulo.id_articulo,
-        nombre: detalleArticulo.nombre,
-        precio: detalleArticulo.precio,
-        imagen_url: detalleArticulo.imagen_url,
-      });
-    };
+	useEffect(() => {
+		const consultarDatos = () => {
+			const articleData = articulos.find((a) => a.id_articulo === Number(id));
+			setArticle(articleData);
+			const categoryData = categorias.find(
+				(c) => c.id === Number(articleData.id_categoria)
+			);
+			setCategory(categoryData);
+		};
+		consultarDatos();
+	}, [id]);
 
-    return (
-        <Container className="my-5 p-0 min">
+	if (!article || !category) {
+		return <div>Cargando...</div>;
+	}
 
-            <Card className="shadow">
-                <Row className="g-0">
+	return (
+		<div>
+			<Container className='my-5 p-0' as={'main'}>
+				<Breadcrumb>
+					<Breadcrumb.Item href='/' title='Inicio'>
+						<i className='bi bi-house'></i>
+					</Breadcrumb.Item>
+					<Breadcrumb.Item href='/store'>Tienda</Breadcrumb.Item>
+					<Breadcrumb.Item href='/store'>{category.nombre}</Breadcrumb.Item>
+					<Breadcrumb.Item active>{article.nombre}</Breadcrumb.Item>
+				</Breadcrumb>
+				<Row className='row-gap-5'>
+					<Col
+						xs={12}
+						md={6}
+						className='d-flex align-items-center justify-content-center'
+					>
+						<Ratio aspectRatio='16x9'>
+							<Image
+								src={article.imagen_url}
+								className='object-fit-cover rounded-1'
+							/>
+						</Ratio>
+					</Col>
+					<Col xs={12} md={6} className='p-5'>
+						<h1 className='text-center mb-4'>{article.nombre}</h1>
+						<p className='fw-light fs-5'>{article.descripcion}</p>
+                        <p className='text-secondary fw-light'>
+							<strong>Stock: </strong>
+							{article.stock} unidades
+						</p>
+						<p className='text-center h4 my-4'>
+							${article.precio.toLocaleString('es-CL')}
+						</p>
+                        <div className='w-full text-center'>
+						<Button
+							variant='primary'
+							size='lg'
+							onClick={() =>
+								addToCart({
+									id_articulo: article.id_articulo,
+									nombre: article.nombre,
+									precio: article.precio,
+									imagen_url: article.imagen_url,
+								})
+							}
+						>
+							Agregar al carrito <i className='bi bi-cart-plus'></i>
+						</Button></div>
+					</Col>
+				</Row>
+			</Container>
+			<Container className='border-top border-secondary-subtle py-5'>
+				<h2 className='mb-4'>Otros artículos de la misma categoría</h2>
+				<RowCardArticulosFiltrados
+					key={article.id_articulo}
+					categoryId={article.id_categoria}
+					numberOfRows={1}
+					excludedArticleId={article.id_articulo}
+				/>
+			</Container>
+		</div>
+	);
+};
 
-                    {/* Imagen */}
-                    <Col md={4} className="d-flex align-items-center justify-content-center">
-                        <Image
-                            src={detalleArticulo.imagen_url}
-                            className='m-4'
-                            style={{
-                                maxWidth: '300px',
-                                maxHeight: '300px',
-                                objectFit: 'cover',
-
-                            }}
-                        />
-                    </Col>
-
-                    {/* Formulario */}
-                    <Col md={8} className="p-5">
-                        <h3 className="text-center mb-4">
-                            {detalleArticulo.nombre}
-                        </h3>
-
-
-                        <Form.Group className="mb-3">
-                            <Form.Label>{detalleArticulo.descripcion}</Form.Label>
-                        </Form.Group>
-
-                        <Form.Group className="mb-3 text-center mt-5">
-                            <h4>${detalleArticulo.precio.toLocaleString("es-CL")}</h4>
-                        </Form.Group>
-
-                        <Form.Group className="mb-3">
-                            <Button variant="primary" className="w-100" onClick={handleAddToCart}>
-                                Agregar al carrito <i className="bi bi-cart-plus"></i>
-                            </Button>
-                        </Form.Group>
-
-
-                    </Col>
-                </Row>
-            </Card>
-
-        </Container>
-    )
-}
-
-export default DetailArticle
+export default DetailArticle;

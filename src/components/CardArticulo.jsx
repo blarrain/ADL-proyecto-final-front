@@ -46,7 +46,7 @@ const CardArticulo = (props) => {
         <Card.Text>${price.toLocaleString("es-CL")}</Card.Text>
         <Card.Link onClick={() => verDetalle(props.id)}>Ver detalles </Card.Link>
         <Stack direction="horizontal" className="justify-content-between mt-4">
-          <Button variant="outline-danger"  onClick={handleFavorito}>
+          <Button variant="outline-pink" onClick={handleFavorito} title='Agregar a favoritos'>
             <i className="bi bi-heart" title="Agregar a favoritos"></i>
           </Button>
           <Button variant="primary" onClick={handleAddToCart}>

@@ -32,7 +32,7 @@ function App() {
         <Route path="/cart" element={user ? <CartPage /> : <Navigate to="/login" />} />
         <Route path="/article" element={user ? <ArticlePage /> : <Navigate to="/login" />} />
         <Route path="/favorite" element={user ? <NotFoundPage /> : <Navigate to="/login" />} />
-        {/* <Route path="/favorite" element={user ? <FavoritesPages /> : <Navigate to="/login" />} /> */}
+        {/* <Route path="/favorite" element={user ? <FavoritesPages /> : <Navigate to="/login" />} /> */}z
         <Route path="/detail/:id" element={user ? <DetailArticle /> : <Navigate to="/login" />} />
         <Route path="*" element={<NotFoundPage />} /> {/* /404 */}
       </Routes>
