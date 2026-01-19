@@ -4,6 +4,7 @@ export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
+  const [show, setShow] = useState(false);
 
   // Agregar producto desde JSON
   const addToCart = (articulo) => {
@@ -73,6 +74,8 @@ const CartProvider = ({ children }) => {
         restaCart,
         removeItem,
         total,
+        show,
+        setShow
       }}
     >
       {children}

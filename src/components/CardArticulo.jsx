@@ -8,7 +8,7 @@ import { CartContext } from "../context/CartContext";
 import Swal from "sweetalert2";
 
 const CardArticulo = (props) => {
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, setShow } = useContext(CartContext);
 
   const price = props.price ?? 0;
 
@@ -18,6 +18,7 @@ const CardArticulo = (props) => {
   }
 
   const handleAddToCart = () => {
+    setShow(true)
     addToCart({
       id_articulo: props.id,
       nombre: props.name,
@@ -27,14 +28,14 @@ const CardArticulo = (props) => {
   };
 
   const handleFavorito = () => {
-  Swal.fire({
-    icon: "info",
-    title: "Funcionalidad no disponible",
-    text: "La opción de favoritos aún no se encuentra operativa.",
-    confirmButtonText: "Entendido",
-    confirmButtonColor: "#198754", // verde bootstrap
-  });
-};
+    Swal.fire({
+      icon: "info",
+      title: "Funcionalidad no disponible",
+      text: "La opción de favoritos aún no se encuentra operativa.",
+      confirmButtonText: "Entendido",
+      confirmButtonColor: "#198754", // verde bootstrap
+    });
+  };
 
 
   return (
