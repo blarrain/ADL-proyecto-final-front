@@ -10,15 +10,21 @@ import Header from '../components/Header.jsx';
 import Notificacion from '../components/Alert.jsx';
 // import { articulos, categorias } from '../assets/data/datos.js';
 
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { CartContext } from '../context/CartContext';
 import { UserContext } from '../context/userContext';
 import { ArticulosContext } from '../context/ArticulosContext';
 
 const StorePage = () => {
-	const { articulos } = useContext(ArticulosContext);
+	const { getAllArticulos, articulos } = useContext(ArticulosContext);
 	const { show } = useContext(CartContext);
 	const { user } = useContext(UserContext);
+
+	useEffect(() => {
+		if (articulos.length === 0) {
+			getAllArticulos();
+		}
+	}, [articulos, getAllArticulos]);
 
 	const alerta = user ? 'success' : 'danger';
 	const mensajeAlerta = user ? '¡Producto Agregado!' : '¡Debe iniciar sesión!';

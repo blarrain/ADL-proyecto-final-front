@@ -1,23 +1,35 @@
-import CardArticulo from '../components/CardArticulo';
 // import { articulos } from '../assets/data/datos.js';
-import Header from '../components/Header.jsx';
+// import CarruselArticulos from '../components/carruselArticulos.jsx';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-// import CarruselArticulos from '../components/carruselArticulos.jsx';
+import Button from 'react-bootstrap/Button';
+
+import CardArticulo from '../components/CardArticulo';
+import Header from '../components/Header.jsx';
 import PresentacionTienda from '../components/PresentacionTienda.jsx';
-import { useContext } from 'react';
+
+import { useContext, useEffect } from 'react';
 import { ArticulosContext } from '../context/ArticulosContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
-	const { articulos } = useContext(ArticulosContext);
+	const { articulos, getAllArticulos } = useContext(ArticulosContext);
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (articulos.length === 0) {
+			getAllArticulos();
+		}
+	}, [articulos, getAllArticulos]);
 
 	return (
 		<div>
 			<Header />
 			<main>
 				<PresentacionTienda />
-				<Container className='my-5'>
+				<Container className='my-5 pb-5'>
 					{/* <CarruselArticulos/> */}
 					<h2>Últimos artículos de la tienda</h2>
 					<Row className='row-gap-4 my-4'>
@@ -33,6 +45,16 @@ const HomePage = () => {
 							</Col>
 						))}
 					</Row>
+					<div className='w-full text-center text-lg-end'>
+						<Button
+							variant='outline-primary'
+							size='lg'
+							className='fw-semibold'
+							onClick={() => navigate('/store')}
+						>
+							Ir a la tienda <i className='bi bi-arrow-right'></i>
+						</Button>
+					</div>
 				</Container>
 			</main>
 		</div>
