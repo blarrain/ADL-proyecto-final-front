@@ -16,7 +16,7 @@ import { UserContext } from '../context/userContext';
 import { ArticulosContext } from '../context/ArticulosContext';
 
 const StorePage = () => {
-	const { getAllArticulos, articulos } = useContext(ArticulosContext);
+	const { getAllArticulos, articulos, categorias } = useContext(ArticulosContext);
 	const { show } = useContext(CartContext);
 	const { user } = useContext(UserContext);
 
@@ -69,7 +69,7 @@ const StorePage = () => {
 						<Button variant='outline-primary disabled'>Filtrar</Button>
 					</Stack>
 					<h3>Categoría</h3>
-					{/* {categorias.map((cat) => (
+					{categorias.map((cat) => (
 						<Form.Check
 							disabled
 							key={cat.id}
@@ -77,8 +77,7 @@ const StorePage = () => {
 							label={cat.nombre}
 							id={cat.nombre}
 						/>
-					))} */}{' '}
-					null
+					))}
 				</aside>
 				<main className='bd-main py-3'>
 					<Row className='row-gap-4'>

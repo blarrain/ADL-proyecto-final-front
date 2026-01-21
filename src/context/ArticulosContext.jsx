@@ -4,6 +4,10 @@ export const ArticulosContext = createContext();
 
 const ArticulosProvider = ({ children }) => {
 	const [articulos, setArticulos] = useState([]);
+	const categorias = [
+		{ nombre: 'categoria 1', id_categoria: 1 },
+		{ nombre: 'categoria 2', id_categoria: 2 },
+	];
 
 	const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5000';
 
@@ -16,7 +20,9 @@ const ArticulosProvider = ({ children }) => {
 	};
 
 	return (
-		<ArticulosContext.Provider value={{ articulos, getAllArticulos }}>
+		<ArticulosContext.Provider
+			value={{ articulos, categorias, getAllArticulos }}
+		>
 			{children}
 		</ArticulosContext.Provider>
 	);
