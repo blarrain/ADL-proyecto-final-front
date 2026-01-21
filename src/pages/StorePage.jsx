@@ -7,25 +7,28 @@ import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import CardArticulo from './../components/CardArticulo.jsx';
 import Header from '../components/Header.jsx';
-import { articulos, categorias } from '../assets/data/datos.js';
-import { CartContext } from "../context/CartContext";
-import { useContext } from 'react';
 import Notificacion from '../components/Alert.jsx';
-import { UserContext } from '../context/userContext.jsx';
+// import { articulos, categorias } from '../assets/data/datos.js';
+
+import { useContext } from 'react';
+import { CartContext } from '../context/CartContext';
+import { UserContext } from '../context/userContext';
+import { ArticulosContext } from '../context/ArticulosContext';
 
 const StorePage = () => {
+	const { articulos } = useContext(ArticulosContext);
 	const { show } = useContext(CartContext);
-	const { user } = useContext(UserContext)
+	const { user } = useContext(UserContext);
 
-	const alerta = user ? 'success' : 'danger'
-	const mensajeAlerta = user ? '¡Producto Agregado!' : '¡Debe iniciar sesión!'
+	const alerta = user ? 'success' : 'danger';
+	const mensajeAlerta = user ? '¡Producto Agregado!' : '¡Debe iniciar sesión!';
 
 	return (
 		<div>
 			<Header h1Text='Tienda' pText='Todos los artículos' />
-			{show &&
+			{show && (
 				<Notificacion variant={alerta} mensaje={mensajeAlerta}></Notificacion>
-			}
+			)}
 			<Container fluid className='bd-layout py-3'>
 				<aside className='bd-sidebar sticky-top py-3 z-n1'>
 					<h2>Filtros</h2>{' '}
@@ -60,7 +63,7 @@ const StorePage = () => {
 						<Button variant='outline-primary disabled'>Filtrar</Button>
 					</Stack>
 					<h3>Categoría</h3>
-					{categorias.map((cat) => (
+					{/* {categorias.map((cat) => (
 						<Form.Check
 							disabled
 							key={cat.id}
@@ -68,7 +71,8 @@ const StorePage = () => {
 							label={cat.nombre}
 							id={cat.nombre}
 						/>
-					))}
+					))} */}{' '}
+					null
 				</aside>
 				<main className='bd-main py-3'>
 					<Row className='row-gap-4'>

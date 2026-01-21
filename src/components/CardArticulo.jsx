@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 const CardArticulo = (props) => {
   const { addToCart, setShow } = useContext(CartContext);
 
-  const price = props.price ?? 0;
+  const price = Number(props.price);
 
   const navigate = useNavigate()
   const verDetalle = (id) => {

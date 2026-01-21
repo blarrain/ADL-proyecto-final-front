@@ -1,8 +1,11 @@
-import React from 'react';
-import { articulos } from '../assets/data/datos';
+import { useContext } from 'react';
+import { ArticulosContext } from '../context/ArticulosContext';
 import SingleArticuloRow from './SingleArticuloRow';
 
 const AllArticulosStack = () => {
+	const { articulos } = useContext(ArticulosContext);
+
+
 	return (
 		<div>
 			<h2>Todos los artículos</h2>
