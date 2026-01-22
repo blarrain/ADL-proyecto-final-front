@@ -17,7 +17,7 @@ import FavoritesPages from './pages/FavoritesPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
-	// const { user } = useContext(UserContext)
+	const { user } = useContext(UserContext);
 	const { token } = useContext(UserContext);
 
 	return (
@@ -25,36 +25,31 @@ function App() {
 			<Navbar />
 			<Routes>
 				<Route path='/' element={<HomePage />} />
-				{/* <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} /> */}
 				<Route
 					path='/profile'
 					element={token ? <ProfilePage /> : <Navigate to='/login' />}
 				/>
-				<Route path='/login' element={<LoginPage />} />
+				<Route
+					path='/login'
+					element={token ? <Navigate to='/profile' /> : <LoginPage />}
+				/>
 				<Route path='/register' element={<RegisterPage />} />
-				{/* <Route path="/store" element={user ? <StorePage /> : <Navigate to="/login" />} /> */}
-				<Route path="/store" element={<StorePage />} />
-				{/* <Route path="/cart" element={user ? <CartPage /> : <Navigate to="/login" />} /> */}
+				<Route path='/store' element={<StorePage />} />
 				<Route
 					path='/cart'
 					element={token ? <CartPage /> : <Navigate to='/login' />}
 				/>
-				{/* <Route path="/article" element={user ? <ArticlePage /> : <Navigate to="/login" />} /> */}
 				<Route
 					path='/article'
-					element={token ? <ArticlePage /> : <Navigate to='/login' />}
+					element={token && user?.rol === 'admin' ? <ArticlePage /> : <Navigate to='/store' />}
 				/>
-				{/* <Route path="/favorite" element={user ? <NotFoundPage /> : <Navigate to="/login" />} /> */}
 				<Route
 					path='/favorite'
 					element={token ? <NotFoundPage /> : <Navigate to='/login' />}
 				/>
-				{/* <Route path="/favorite" element={user ? <FavoritesPages /> : <Navigate to="/login" />} /> */}
-				z
-				{/* <Route path="/detail/:id" element={user ? <DetailArticle /> : <Navigate to="/login" />} /> */}
 				<Route
 					path='/detail/:id'
-					element={token ? <DetailArticle /> : <Navigate to='/login' />}
+					element={<DetailArticle />}
 				/>
 				<Route path='*' element={<NotFoundPage />} /> {/* /404 */}
 			</Routes>

@@ -7,7 +7,7 @@ import { ArticulosContext } from '../context/ArticulosContext';
 
 import SingleArticuloRow from './SingleArticuloRow';
 
-const AllArticulosStack = () => {
+const AllArticulosStack = ({ onEdit }) => {
 	const { articulos, getAllArticulos } = useContext(ArticulosContext);
 
 	useEffect(() => {
@@ -31,8 +31,15 @@ const AllArticulosStack = () => {
 						<Stack direction='horizontal' gap={3}>
 							<span style={{ minWidth: '4ch' }}>{art.id_articulo}</span>{' '}
 							<span className='me-auto'>{art.nombre}</span>
-							<Button variant='outline-primary' disabled>Editar <i class="bi bi-pencil-square"></i></Button>
-							<Button variant='danger' disabled>Eliminar <i class="bi bi-trash"></i></Button>
+							<Button
+								variant='outline-primary'
+								onClick={() => onEdit(art.id_articulo)}
+							>
+								Editar <i class='bi bi-pencil-square'></i>
+							</Button>
+							<Button variant='danger' disabled>
+								Eliminar <i class='bi bi-trash'></i>
+							</Button>
 						</Stack>
 					</ListGroup.Item>
 				))}

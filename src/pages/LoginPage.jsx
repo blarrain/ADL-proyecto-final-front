@@ -1,19 +1,30 @@
-import React, { useContext, useState } from "react";
-import { Container, Row, Col, Card, Form, Button, Image } from "react-bootstrap";
-import Swal from "sweetalert2";
-import { UserContext } from "../context/userContext";
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import {
+	Container,
+	Row,
+	Col,
+	Card,
+	Form,
+	Button,
+	Image,
+} from 'react-bootstrap';
+import Swal from 'sweetalert2';
+import { UserContext } from '../context/userContext';
+// import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+	const [email, setEmail] = useState([]);
+	const [password, setPassword] = useState([]);
 
-  const { login, email, password, setEmail, setPassword, user, msgError } = useContext(UserContext);
+	const { login, logout, user, token } = useContext(UserContext);
 
-  function verificaDatos(e) {
-    e.preventDefault();
-    login()
-  }
+	const verificaDatos = async (e) => {
+		e.preventDefault();
+		const response = await login(email, password);
+		alert(response?.message || 'Algo salió mal');
+	};
 
-  /*  const validarDatos = (e) => {
+	/*  const validarDatos = (e) => {
      e.preventDefault();
  
      if (!email.trim() || !password.trim()) {
@@ -31,68 +42,59 @@ const LoginPage = () => {
      setPass("");
    }; */
 
+	return (
+		<Container className='my-5'>
+			<Row className='justify-content-center'>
+				<Col>
+					<Card className='shadow'>
+						<Row className='g-0'>
+							{/* Imagen */}
+							<Col md={6}>
+								<Image
+									src='/src/assets/img/logoJRB.png'
+									fluid
+									className='h-100'
+								/>
+							</Col>
 
-  return (
-    <Container className="my-5">
-      <Row className="justify-content-center">
-        <Col>
-          <Card className="shadow">
-            <Row className="g-0">
+							{/* Formulario */}
+							<Col md={6} className='p-4'>
+								<h3 className='text-center mb-4'>Ingreso de clientes</h3>
 
-              {/* Imagen */}
-              <Col md={6}>
-                <Image
-                  src="/src/assets/img/logoJRB.png"
-                  fluid
-                  className="h-100"
-                />
-              </Col>
+								<Form onSubmit={verificaDatos}>
+									<Form.Group className='mb-3'>
+										<Form.Label>Email</Form.Label>
+										<Form.Control
+											type='email'
+											placeholder='name@example.com'
+											onChange={(e) => setEmail(e.target.value)}
+										/>
+									</Form.Group>
 
-              {/* Formulario */}
-              <Col md={6} className="p-4">
-                <h3 className="text-center mb-4">
-                  Ingreso de clientes
-                </h3>
+									<Form.Group className='mb-4'>
+										<Form.Label>Contraseña</Form.Label>
+										<Form.Control
+											type='password'
+											placeholder='Ingrese contraseña'
+											onChange={(e) => setPassword(e.target.value)}
+										/>
+									</Form.Group>
 
-                <Form onSubmit={verificaDatos}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                      type="email"
-                      placeholder="name@example.com"
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </Form.Group>
-
-                  <Form.Group className="mb-4">
-                    <Form.Label>Contraseña</Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Ingrese contraseña"
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </Form.Group>
-
-                  <Button type="submit" variant="primary" className="w-100">
-                    Iniciar sesión
-                  </Button>
-                  {msgError != "" && (
-                    <div style={{ color: 'red', marginTop: '10px', textAlign: 'center' }}>
-                      {msgError}
-                    </div>
-                  )}
-                  <label className="text-center mt-3 w-100">
-                    Si no tienes cuenta puedes <Card.Link href="/register"> Registrarte</Card.Link>
-                  </label>
-                </Form>
-
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
-  );
+									<Button type='submit' variant='primary' className='w-100'>
+										Iniciar sesión
+									</Button>
+									<label className='text-center mt-3 w-100'>
+										Si no tienes cuenta puedes{' '}
+										<Card.Link href='/register'> Registrarte</Card.Link>
+									</label>
+								</Form>
+							</Col>
+						</Row>
+					</Card>
+				</Col>
+			</Row>
+		</Container>
+	);
 };
 
-export default LoginPage
+export default LoginPage;
