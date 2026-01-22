@@ -5,32 +5,67 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ArticulosContext } from '../context/ArticulosContext';
 import { UserContext } from '../context/userContext';
 
 const ArticleForm = (props) => {
-	const { categorias, getAllArticulos, BASE_URL } = useContext(ArticulosContext);
+	const { categorias, getAllArticulos, BASE_URL } =
+		useContext(ArticulosContext);
 	const { token } = useContext(UserContext);
-	const [nombre, setNombre] = useState([]);
-	const [idCategoria, setIdCategoria] = useState([]);
-	const [precio, setPrecio] = useState([]);
-	const [stock, setStock] = useState([]);
-	const [descripcion, setDescripcion] = useState([]);
-	const [imgUrl, setImgUrl] = useState([]);
+	const [nombre, setNombre] = useState('');
+	const [idCategoria, setIdCategoria] = useState(1);
+	const [precio, setPrecio] = useState('');
+	const [stock, setStock] = useState('');
+	const [descripcion, setDescripcion] = useState('');
+	const [imgUrl, setImgUrl] = useState('');
 
-	// useEffect(() => {
-	// if (!props.id) {getArticulo(props.id)}
-	// }, []);
+	const getArticulo = async (id) => {
+		const response = await fetch(`${BASE_URL}/articulos/${id}`);
+		if (!response.ok) {
+			alert(
+				`Error al obtener datos del artículo: ${response.status} ${response.statusText}`,
+			);
+			return;
+		}
+		const data = await response.json();
+		setNombre(data.nombre);
+		setDescripcion(data.descripcion);
+		setPrecio(data.precio);
+		setStock(data.stock);
+		setImgUrl(data.imagen_url);
+		setIdCategoria(data.id_categoria);
+	};
 
-const handleSubmit = async (e) => {
-	e.preventDefault()
-	if (!props.id) {
-		await createArticulo(nombre, descripcion, precio, stock, imgUrl, idCategoria)
-	} else {
-		await updateArticulo(props.id, nombre, descripcion, precio, stock, imgUrl, idCategoria)
-	}
-}
+	useEffect(() => {
+		if (props.id) {
+			getArticulo(props.id);
+		}
+	}, [props.id]);
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		if (!props.id) {
+			await createArticulo(
+				nombre,
+				descripcion,
+				precio,
+				stock,
+				imgUrl,
+				idCategoria,
+			);
+		} else {
+			await updateArticulo(
+				props.id,
+				nombre,
+				descripcion,
+				precio,
+				stock,
+				imgUrl,
+				idCategoria,
+			);
+		}
+	};
 	const createArticulo = async (
 		nombre,
 		descripcion,
@@ -56,10 +91,29 @@ const handleSubmit = async (e) => {
 				activo,
 			}),
 		});
-		console.log({
-			response,
-		});
-		await response.json();
+		console.log(
+			JSON.stringify({
+				nombre,
+				descripcion,
+				precio,
+				stock,
+				imagen_url,
+				id_categoria,
+				activo,
+			}),
+		);
+		if (!response.ok) {
+			alert(`Error: ${response.status} ${response.statusText}`);
+			return;
+		}
+		const data = await response.json();
+		alert(data?.message || 'Artículo creado exitosamente');
+		setNombre('');
+		setStock('');
+		setDescripcion('');
+		setPrecio('');
+		setImgUrl('');
+		setIdCategoria(1);
 		await getAllArticulos();
 	};
 
@@ -89,10 +143,12 @@ const handleSubmit = async (e) => {
 				activo,
 			}),
 		});
-		console.log({
-			response,
-		});
-		await response.json();
+		if (!response.ok) {
+			alert(`Error: ${response.status} ${response.statusText}`);
+			return;
+		}
+		const data = await response.json();
+		alert(data?.message || 'Artículo actualizado exitosamente');
 		await getAllArticulos();
 	};
 
@@ -141,6 +197,7 @@ const handleSubmit = async (e) => {
 								<Form.Control
 									type='text'
 									required
+									value={nombre}
 									onChange={(e) => setNombre(e.target.value)}
 								/>
 							</Form.Group>
@@ -156,13 +213,14 @@ const handleSubmit = async (e) => {
 								<Form.Control
 									as='select'
 									required
+									value={idCategoria}
 									onChange={(e) => setIdCategoria(e.target.value)}
 								>
 									{categorias.map((cat) => (
 										<option
-											key={cat.id}
+											key={cat.id_categoria}
 											id={`option-${cat.nombre}`}
-											value={cat.id}
+											value={cat.id_categoria}
 										>
 											{cat.nombre}
 										</option>
@@ -182,8 +240,14 @@ const handleSubmit = async (e) => {
 								</Form.Label>
 								<InputGroup>
 									<InputGroup.Text>$</InputGroup.Text>
-									<Form.Control type='number' min={1} step={1} required         onChange={(e) => setPrecio(e.target.value)}
- />
+									<Form.Control
+										type='number'
+										min={1}
+										step={1}
+										required
+										value={precio}
+										onChange={(e) => setPrecio(e.target.value)}
+									/>
 								</InputGroup>
 							</Form.Group>
 						</Col>
@@ -196,9 +260,13 @@ const handleSubmit = async (e) => {
 									</abbr>
 								</Form.Label>
 								<InputGroup>
-									<Form.Control type='number' min={0} step={1} required 
-									        onChange={(e) => setStock(e.target.value)}
-
+									<Form.Control
+										type='number'
+										min={0}
+										step={1}
+										required
+										value={stock}
+										onChange={(e) => setStock(e.target.value)}
 									/>
 								</InputGroup>
 							</Form.Group>
@@ -211,9 +279,13 @@ const handleSubmit = async (e) => {
 								*
 							</abbr>
 						</Form.Label>
-						<Form.Control as='textarea' rows={3} required
-        onChange={(e) => setDescripcion(e.target.value)}
-						 />
+						<Form.Control
+							as='textarea'
+							rows={3}
+							required
+							value={descripcion}
+							onChange={(e) => setDescripcion(e.target.value)}
+						/>
 					</Form.Group>
 					<Form.Group controlId='article.img' className='mb-3'>
 						<Form.Label>
@@ -222,8 +294,11 @@ const handleSubmit = async (e) => {
 								*
 							</abbr>
 						</Form.Label>
-						<Form.Control type='url' required 
-        onChange={(e) => setImgUrl(e.target.value)}
+						<Form.Control
+							type='url'
+							required
+							value={imgUrl}
+							onChange={(e) => setImgUrl(e.target.value)}
 						/>
 					</Form.Group>
 					<Button type='submit' variant='primary'>

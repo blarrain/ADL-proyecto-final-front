@@ -21,7 +21,7 @@ const ArticulosProvider = ({ children }) => {
 
 	return (
 		<ArticulosContext.Provider
-			value={{ articulos, categorias, getAllArticulos }}
+			value={{ articulos, categorias, getAllArticulos, BASE_URL }}
 		>
 			{children}
 		</ArticulosContext.Provider>

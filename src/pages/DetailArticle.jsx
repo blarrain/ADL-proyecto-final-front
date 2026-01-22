@@ -1,4 +1,6 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+
 import Button from 'react-bootstrap/Button';
 import Ratio from 'react-bootstrap/Ratio';
 import Container from 'react-bootstrap/Container';
@@ -6,32 +8,54 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
-import { useParams } from 'react-router-dom';
-import { articulos, categorias } from '../assets/data/datos';
-import { CartContext } from '../context/CartContext';
-import { useEffect } from 'react';
-import CardArticulo from '../components/CardArticulo';
+
 import RowCardArticulosFiltrados from '../components/RowCardArticulosFiltrados';
+import CardArticulo from '../components/CardArticulo';
+
+// import { articulos, categorias } from '../assets/data/datos';
+import { CartContext } from '../context/CartContext';
+import { ArticulosContext } from '../context/ArticulosContext';
 
 const DetailArticle = () => {
 	const { addToCart } = useContext(CartContext);
 	const [article, setArticle] = useState(null);
-	const [category, setCategory] = useState(null);
+	// const [category, setCategory] = useState(null);
+	const { BASE_URL } = useContext(ArticulosContext);
 	const { id } = useParams();
 
+	const getArticulo = async (id) => {
+		const response = await fetch(`${BASE_URL}/articulos/${id}`);
+		const articleData = await response.json();
+		setArticle(articleData);
+	};
 	useEffect(() => {
-		const consultarDatos = () => {
-			const articleData = articulos.find((a) => a.id_articulo === Number(id));
-			setArticle(articleData);
-			const categoryData = categorias.find(
-				(c) => c.id === Number(articleData.id_categoria)
-			);
-			setCategory(categoryData);
-		};
-		consultarDatos();
-	}, [id]);
+		getArticulo(id);
+	}, []);
 
-	if (!article || !category) {
+	/*const getArticulo = async (id) => {
+		const response = await fetch(`${BASE_URL}/articulos/${id}`);
+		if (!response.ok) {
+			alert(
+				`Error al obtener datos del artículo: ${response.status} ${response.statusText}`,
+			);
+			return;
+		}
+		const data = await response.json();
+		setNombre(data.nombre);
+		setDescripcion(data.descripcion);
+		setPrecio(data.precio);
+		setStock(data.stock);
+		setImgUrl(data.imagen_url);
+		setIdCategoria(data.id_categoria);
+	};
+
+	useEffect(() => {
+		if (props.id) {
+			getArticulo(props.id);
+		}
+	}, [props.id])*/
+
+	if (!article) {
 		return <div>Cargando...</div>;
 	}
 
@@ -43,7 +67,7 @@ const DetailArticle = () => {
 						<i className='bi bi-house'></i>
 					</Breadcrumb.Item>
 					<Breadcrumb.Item href='/store'>Tienda</Breadcrumb.Item>
-					<Breadcrumb.Item href='/store'>{category.nombre}</Breadcrumb.Item>
+					{/* <Breadcrumb.Item href='/store'>{category.nombre}</Breadcrumb.Item> */}
 					<Breadcrumb.Item active>{article.nombre}</Breadcrumb.Item>
 				</Breadcrumb>
 				<Row className='row-gap-5'>
@@ -62,28 +86,29 @@ const DetailArticle = () => {
 					<Col xs={12} md={6} className='p-5'>
 						<h1 className='text-center mb-4'>{article.nombre}</h1>
 						<p className='fw-light fs-5'>{article.descripcion}</p>
-                        <p className='text-secondary fw-light'>
+						<p className='text-secondary fw-light'>
 							<strong>Stock: </strong>
 							{article.stock} unidades
 						</p>
 						<p className='text-center h4 my-4'>
-							${article.precio.toLocaleString('es-CL')}
+							${Number(article.precio).toLocaleString('es-CL')}
 						</p>
-                        <div className='w-full text-center'>
-						<Button
-							variant='primary'
-							size='lg'
-							onClick={() =>
-								addToCart({
-									id_articulo: article.id_articulo,
-									nombre: article.nombre,
-									precio: article.precio,
-									imagen_url: article.imagen_url,
-								})
-							}
-						>
-							Agregar al carrito <i className='bi bi-cart-plus'></i>
-						</Button></div>
+						<div className='w-full text-center'>
+							<Button
+								variant='primary'
+								size='lg'
+								onClick={() =>
+									addToCart({
+										id_articulo: article.id_articulo,
+										nombre: article.nombre,
+										precio: Number(article.precio),
+										imagen_url: article.imagen_url,
+									})
+								}
+							>
+								Agregar al carrito <i className='bi bi-cart-plus'></i>
+							</Button>
+						</div>
 					</Col>
 				</Row>
 			</Container>

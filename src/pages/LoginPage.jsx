@@ -16,7 +16,7 @@ const LoginPage = () => {
 	const [email, setEmail] = useState([]);
 	const [password, setPassword] = useState([]);
 
-	const { login, logout, user, token } = useContext(UserContext);
+	const { login, user, token } = useContext(UserContext);
 
 	const verificaDatos = async (e) => {
 		e.preventDefault();
