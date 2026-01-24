@@ -5,7 +5,7 @@ import './assets/scss/main.scss';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App.jsx';
 import { BrowserRouter } from 'react-router-dom';
-import UserProvider from './context/userContext.jsx';
+import UserProvider from './context/UserContext.jsx';
 import CartProvider from './context/CartContext.jsx';
 import ArticulosProvider from './context/ArticulosContext.jsx';
 

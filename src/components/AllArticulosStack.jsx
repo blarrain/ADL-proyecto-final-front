@@ -4,7 +4,7 @@ import Stack from 'react-bootstrap/Stack';
 
 import { useContext, useEffect } from 'react';
 import { ArticulosContext } from '../context/ArticulosContext';
-import { UserContext } from '../context/userContext';
+import { UserContext } from '../context/UserContext';
 
 const AllArticulosStack = ({ onEdit }) => {
 	const { articulos, getAllArticulos, BASE_URL } = useContext(ArticulosContext);

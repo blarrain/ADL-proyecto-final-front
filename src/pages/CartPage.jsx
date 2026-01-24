@@ -13,15 +13,14 @@ import { CartContext } from "../context/CartContext";
 import { UserContext } from "../context/UserContext";
 
 
+
 const CartPage = () => {
-  const { cart, sumaCart, restaCart, removeItem, total } = useContext(CartContext);
+  const { cart, sumaCart, restaCart, removeItem, total, clearCart } = useContext(CartContext);
   const { perfil } = useContext(UserContext);
 
   const nombreCompleto = perfil
     ? `${perfil.nombres} ${perfil.apellidos}`
     : "Invitado";
-
-  const direccion = perfil?.direccion || "";
 
   const [comunas, setComunas] = useState([]);
   const [comunaSeleccionada, setComunaSeleccionada] = useState("");
@@ -39,7 +38,7 @@ const CartPage = () => {
       return;
     }
 
-    if (!comunaSeleccionada || !direccion) {
+    if (!comunaSeleccionada || !direccionLocal) {
       Swal.fire(
         "Datos incompletos",
         "Debes confirmar tu dirección y comuna",
@@ -51,16 +50,22 @@ const CartPage = () => {
     Swal.fire({
       icon: "success",
       title: "Pedido generado",
-      text: "Aún no es funcional 🛒 🙁 ",
+      text: "Gracias por tu compra 🛒 🌱 ",
       confirmButtonColor: "#198754",
+    }).then(() => {
+      clearCart();
     });
-    // Swal.fire({
-    //   icon: "success",
-    //   title: "Pedido generado",
-    //   text: "Aún no es funcional 🛒 🙁 ",
-    //   confirmButtonColor: "#198754",
-    // });
   };
+
+
+  const [direccionLocal, setDireccionLocal] = useState("");
+
+  useEffect(() => {
+    if (perfil?.direccion) {
+      setDireccionLocal(perfil.direccion);
+    }
+  }, [perfil]);
+
 
   // 🔹 Cargar comunas
   useEffect(() => {
@@ -187,7 +192,13 @@ const CartPage = () => {
 
                 <div className="mb-4">
                   <small className="text-muted">Dirección</small>
-                  <div className="fw-semibold">{direccion || "Dirección no registrada"}</div>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Ej: Av. Providencia 1234, Depto 56"
+                    value={direccionLocal}
+                    onChange={(e) => setDireccionLocal(e.target.value)}
+                  />
                 </div>
 
                 <hr />

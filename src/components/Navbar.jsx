@@ -7,7 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import miLogo from './../assets/img/logoJRB.png';
-import { UserContext } from '../context/userContext';
+import { UserContext } from '../context/UserContext';
 
 
 function CollapsibleExample() {
