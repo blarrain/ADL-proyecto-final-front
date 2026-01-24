@@ -10,18 +10,56 @@ import {
 } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { CartContext } from "../context/CartContext";
+import { UserContext } from "../context/UserContext";
+
 
 const CartPage = () => {
   const { cart, sumaCart, restaCart, removeItem, total } = useContext(CartContext);
+  const { perfil } = useContext(UserContext);
+
+  const nombreCompleto = perfil
+    ? `${perfil.nombres} ${perfil.apellidos}`
+    : "Invitado";
+
+  const direccion = perfil?.direccion || "";
+
   const [comunas, setComunas] = useState([]);
+  const [comunaSeleccionada, setComunaSeleccionada] = useState("");
+
+  useEffect(() => {
+    if (perfil?.comuna) {
+      setComunaSeleccionada(perfil.comuna);
+    }
+  }, [perfil]);
+
 
   const handleCheckout = () => {
+    if (!perfil) {
+      Swal.fire("Debes iniciar sesión", "", "warning");
+      return;
+    }
+
+    if (!comunaSeleccionada || !direccion) {
+      Swal.fire(
+        "Datos incompletos",
+        "Debes confirmar tu dirección y comuna",
+        "warning",
+      );
+      return;
+    }
+
     Swal.fire({
       icon: "success",
       title: "Pedido generado",
       text: "Aún no es funcional 🛒 🙁 ",
       confirmButtonColor: "#198754",
     });
+    // Swal.fire({
+    //   icon: "success",
+    //   title: "Pedido generado",
+    //   text: "Aún no es funcional 🛒 🙁 ",
+    //   confirmButtonColor: "#198754",
+    // });
   };
 
   // 🔹 Cargar comunas
@@ -54,10 +92,7 @@ const CartPage = () => {
           <Col md={8}>
             <ListGroup variant="flush">
               {cart.map((item) => (
-                <ListGroup.Item
-                  key={item.id_articulo}
-                  className="py-3"
-                >
+                <ListGroup.Item key={item.id_articulo} className="py-3">
                   <Row className="align-items-center">
                     <Col md={2}>
                       <Image
@@ -83,23 +118,17 @@ const CartPage = () => {
                         <Button
                           variant="outline-danger"
                           size="sm"
-                          onClick={() =>
-                            restaCart(item.id_articulo)
-                          }
+                          onClick={() => restaCart(item.id_articulo)}
                         >
                           −
                         </Button>
 
-                        <span className="fw-bold fs-5">
-                          {item.quantity}
-                        </span>
+                        <span className="fw-bold fs-5">{item.quantity}</span>
 
                         <Button
                           variant="outline-primary"
                           size="sm"
-                          onClick={() =>
-                            sumaCart(item.id_articulo)
-                          }
+                          onClick={() => sumaCart(item.id_articulo)}
                         >
                           +
                         </Button>
@@ -108,9 +137,7 @@ const CartPage = () => {
 
                     <Col md={2} className="text-end">
                       <strong>
-                        ${(
-                          item.precio * item.quantity
-                        ).toLocaleString("es-CL")}
+                        ${(item.precio * item.quantity).toLocaleString("es-CL")}
                       </strong>
                     </Col>
 
@@ -118,9 +145,7 @@ const CartPage = () => {
                       <Button
                         variant="outline-danger"
                         size="sm"
-                        onClick={() =>
-                          removeItem(item.id_articulo)
-                        }
+                        onClick={() => removeItem(item.id_articulo)}
                       >
                         <i className="bi bi-trash"></i>
                       </Button>
@@ -140,22 +165,18 @@ const CartPage = () => {
                 </Card.Title>
 
                 <div className="mb-2">
-                  <small className="text-muted">
-                    Cliente
-                  </small>
-                  <div className="fw-semibold">
-                    Nombre Apellido
-                  </div>
+                  <small className="text-muted">Cliente</small>
+                  <div className="fw-semibold">{nombreCompleto}</div>
                 </div>
 
                 <div className="mb-3">
-                  <small className="text-muted">
-                    Comuna
-                  </small>
-                  <select className="form-select">
-                    <option value="">
-                      Selecciona tu comuna
-                    </option>
+                  <small className="text-muted">Comuna</small>
+                  <select
+                    className="form-select"
+                    value={comunaSeleccionada}
+                    onChange={(e) => setComunaSeleccionada(e.target.value)}
+                  >
+                    <option value="">Selecciona tu comuna</option>
                     {comunas.map((c, idx) => (
                       <option key={idx} value={c}>
                         {c}
@@ -165,12 +186,8 @@ const CartPage = () => {
                 </div>
 
                 <div className="mb-4">
-                  <small className="text-muted">
-                    Dirección
-                  </small>
-                  <div className="fw-semibold">
-                    Héroe de la Concepción 999
-                  </div>
+                  <small className="text-muted">Dirección</small>
+                  <div className="fw-semibold">{direccion || "Dirección no registrada"}</div>
                 </div>
 
                 <hr />
