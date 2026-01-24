@@ -24,7 +24,7 @@ const StorePage = () => {
 	const [articulos, setArticulos] = useState([]);
 	const [minPrice, setMinPrice] = useState(null);
 	const [maxPrice, setMaxPrice] = useState(null);
-	const [idCategoria, setIdCategoria] = useState(null);
+	const [idCategoria, setIdCategoria] = useState('');
 
 	const filterArticulos = async (precio_min, precio_max, id_categoria) => {
 		console.log('filterArticulos called'); //debug
@@ -39,8 +39,8 @@ const StorePage = () => {
 			filtros.push(`id_categoria=${id_categoria}`);
 		}
 		const endpoint = `${BASE_URL}/articulos/filtros?${filtros.join('&')}`;
-		console.log(endpoint); //debug
 		const res = await fetch(endpoint);
+		if (!res.ok) {console.error('Error al cargar artículos')}
 		const data = await res.json();
 		setArticulos(data);
 	};
@@ -49,8 +49,6 @@ const StorePage = () => {
 		filterArticulos(null, null, null);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	console.log('Store Page rendered'); //debug
 
 	const alerta = token ? 'success' : 'danger';
 	const mensajeAlerta = token ? '¡Producto Agregado!' : '¡Debe iniciar sesión!';
@@ -62,14 +60,15 @@ const StorePage = () => {
 				<Notificacion variant={alerta} mensaje={mensajeAlerta}></Notificacion>
 			)}
 			<Container fluid className='bd-layout py-3'>
-				<aside className='bd-sidebar sticky-top py-3 z-n1'>
+				<aside className='bd-sidebar sticky-top py-3'>
 					<h2>Filtros</h2>{' '}
-					<Form
+					<Stack as={Form}
 						gap={4}
 						onSubmit={(e) => {
 							e.preventDefault();
 							filterArticulos(minPrice, maxPrice, idCategoria);
 						}}
+						id='filters-form'
 					>
 						<Form.Group>
 							<Form.Label htmlFor='minPrice'>Precio mínimo</Form.Label>
@@ -87,7 +86,7 @@ const StorePage = () => {
 							</Stack>
 						</Form.Group>
 						<Form.Group>
-							<Form.Label htmlFor='minPrice'>Precio máximo</Form.Label>
+							<Form.Label htmlFor='maxPrice'>Precio máximo</Form.Label>
 							<Stack direction='horizontal' gap={3}>
 								<InputGroup>
 									<InputGroup.Text>$</InputGroup.Text>
@@ -105,10 +104,10 @@ const StorePage = () => {
 							<Form.Label>Categoría</Form.Label>
 							<Form.Control
 								as='select'
-								value={idCategoria}
+								value={idCategoria || ''}
 								onChange={(e) => setIdCategoria(e.target.value)}
 							>
-								<option id='option-all' value={null}>
+								<option id='option-all' value=''>
 									Todas las categorías
 								</option>
 								{categorias.map((cat) => (
@@ -125,7 +124,7 @@ const StorePage = () => {
 						<Button type='submit' variant='primary'>
 							Filtrar
 						</Button>
-					</Form>
+					</Stack>
 				</aside>
 				<main className='bd-main py-3'>
 					<Row className='row-gap-4'>
