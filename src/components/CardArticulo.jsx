@@ -8,7 +8,7 @@ import { CartContext } from "../context/CartContext";
 import Swal from "sweetalert2";
 
 const CardArticulo = (props) => {
-  const { addToCart, setShow } = useContext(CartContext);
+  const { addToCart, setMostrar } = useContext(CartContext);
 
   const price = Number(props.price);
 
@@ -18,7 +18,7 @@ const CardArticulo = (props) => {
   }
 
   const handleAddToCart = () => {
-    setShow(true)
+    setMostrar(true)
     addToCart({
       id_articulo: props.id,
       nombre: props.name,

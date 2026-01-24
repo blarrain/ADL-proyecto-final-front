@@ -1,12 +1,35 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { UserContext } from "./UserContext";
+
 
 export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
-  const [show, setShow] = useState(false);
+   const { user } = useContext(UserContext);
+   const cartKey = user?.id_usuario
+    ? `cart_${user.id_usuario}`
+    : "cart_guest";
 
-  // Agregar producto desde JSON
+  // crea el carrito por usuario  
+  const [cart, setCart] = useState(() => {
+    return JSON.parse(localStorage.getItem(cartKey)) || [];
+  });
+
+  const [mostrar, setMostrar] = useState(false);
+
+  // Cuando cambia de usuario cara su carro  
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    setCart(storedCart);
+  }, [cartKey]);
+
+  // persite el carro usuario
+  useEffect(() => {
+    localStorage.setItem(cartKey, JSON.stringify(cart));
+  }, [cart, cartKey]);
+
+
+  // Agregar producto JSON
   const addToCart = (articulo) => {
     setCart((prev) => {
       const existe = prev.find(
@@ -35,29 +58,29 @@ const CartProvider = ({ children }) => {
   };
 
   const sumaCart = (id_articulo) => {
-    setCart(
-      cart.map((item) =>
+    setCart((prev) =>
+      prev.map((item) =>
         item.id_articulo === id_articulo
           ? { ...item, quantity: item.quantity + 1 }
-          : item
-      )
+          : item,
+      ),
     );
   };
 
   const restaCart = (id_articulo) => {
-    setCart(
-      cart
+    setCart((prev) =>
+      prev
         .map((item) =>
           item.id_articulo === id_articulo
             ? { ...item, quantity: item.quantity - 1 }
-            : item
+            : item,
         )
-        .filter((item) => item.quantity > 0)
+        .filter((item) => item.quantity > 0),
     );
   };
 
   const removeItem = (id_articulo) => {
-    setCart(cart.filter((item) => item.id_articulo !== id_articulo));
+    setCart((prev) => prev.filter((item) => item.id_articulo !== id_articulo));
   };
 
   const total = cart.reduce(
@@ -74,8 +97,8 @@ const CartProvider = ({ children }) => {
         restaCart,
         removeItem,
         total,
-        show,
-        setShow
+        mostrar,
+        setMostrar
       }}
     >
       {children}
