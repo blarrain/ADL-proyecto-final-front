@@ -26,7 +26,7 @@ const ArticulosProvider = ({ children }) => {
 		getAllArticulos()
 		getAllCategorias();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [articulos, getAllArticulos]);
+	}, []);
 
 	return (
 		<ArticulosContext.Provider
