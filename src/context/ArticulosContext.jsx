@@ -1,13 +1,10 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 export const ArticulosContext = createContext();
 
 const ArticulosProvider = ({ children }) => {
 	const [articulos, setArticulos] = useState([]);
-	const categorias = [
-		{ nombre: 'categoria 1', id_categoria: 1 },
-		{ nombre: 'categoria 2', id_categoria: 2 },
-	];
+	const [categorias, setCategorias] = useState([]);
 
 	const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5000';
 
@@ -16,8 +13,18 @@ const ArticulosProvider = ({ children }) => {
 		const res = await fetch(endpoint);
 		const data = await res.json();
 		setArticulos(data);
-		return data;
 	};
+
+	const getAllCategorias = async () => {
+		const endpoint = `${BASE_URL}/categorias`;
+		const res = await fetch(endpoint);
+		const data = await res.json();
+		setCategorias(data);
+	};
+
+	useEffect(() => {
+		getAllCategorias()
+	}, []);
 
 	return (
 		<ArticulosContext.Provider
