@@ -9,7 +9,7 @@ import {
 	Image,
 } from 'react-bootstrap';
 import Swal from 'sweetalert2';
-import { UserContext } from '../context/userContext';
+import { UserContext } from '../context/UserContextTemp';
 // import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {

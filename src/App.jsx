@@ -5,7 +5,7 @@ import LoginPage from './pages/LoginPage';
 import Navbar from './components/Navbar';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useContext } from 'react';
-import { UserContext } from './context/userContext';
+import { UserContext } from './context/UserContextTemp';
 import RegisterPage from './pages/RegisterPage';
 import StorePage from './pages/StorePage';
 import CartPage from './pages/CartPage';

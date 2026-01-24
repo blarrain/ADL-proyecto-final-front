@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { UserContext } from "./userContext";
+import { UserContext } from "./UserContextTemp";
 
 
 export const CartContext = createContext();
@@ -88,6 +88,11 @@ const CartProvider = ({ children }) => {
     0
   );
 
+  const clearCart = () => {
+    setCart([]);
+    localStorage.removeItem(cartKey);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -96,6 +101,7 @@ const CartProvider = ({ children }) => {
         sumaCart,
         restaCart,
         removeItem,
+        clearCart,
         total,
         mostrar,
         setMostrar
