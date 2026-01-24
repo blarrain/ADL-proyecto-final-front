@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { CartContext } from "../context/CartContext";
-import { UserContext } from "../context/UserContextTemp";
+import { UserContext } from "../context/UserContext";
 
 
 

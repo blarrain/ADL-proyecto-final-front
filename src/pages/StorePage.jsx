@@ -12,7 +12,7 @@ import Notificacion from '../components/Alert.jsx';
 
 import { useContext, useEffect } from 'react';
 import { CartContext } from '../context/CartContext';
-import { UserContext } from '../context/UserContextTemp.jsx';
+import { UserContext } from '../context/UserContext.jsx';
 import { ArticulosContext } from '../context/ArticulosContext';
 
 const StorePage = () => {
