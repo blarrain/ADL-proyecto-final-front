@@ -1,20 +1,26 @@
+import { useContext } from 'react';
+
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { articulos } from '../assets/data/datos';
+
 import CardArticulo from './CardArticulo';
+
+import { ArticulosContext } from '../context/ArticulosContext';
 
 const RowCardArticulosFiltrados = ({
 	categoryId = 1,
 	numberOfRows = 1,
 	excludedArticleId = 1,
 }) => {
+	const { articulos } = useContext(ArticulosContext);
+
 	return (
 		<Row className='row-gap-4'>
 			{articulos
 				.filter(
 					(art) =>
 						art.id_categoria === categoryId &&
-						art.id_articulo !== excludedArticleId
+						art.id_articulo !== excludedArticleId,
 				)
 				.slice(0, numberOfRows * 3)
 				.map((art) => (

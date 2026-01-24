@@ -5,16 +5,12 @@ import Stack from 'react-bootstrap/Stack';
 import { useContext, useEffect } from 'react';
 import { ArticulosContext } from '../context/ArticulosContext';
 
-import SingleArticuloRow from './SingleArticuloRow';
-
 const AllArticulosStack = ({ onEdit }) => {
 	const { articulos, getAllArticulos } = useContext(ArticulosContext);
 
 	useEffect(() => {
-		if (articulos.length === 0) {
 			getAllArticulos();
-		}
-	}, [articulos, getAllArticulos]);
+	}, [getAllArticulos]);
 
 	return (
 		<div className='my-5'>

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-
+/* eslint-disable-next-line react-refresh/only-export-components */
 export const ArticulosContext = createContext();
 
 const ArticulosProvider = ({ children }) => {
@@ -23,8 +23,10 @@ const ArticulosProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
-		getAllCategorias()
-	}, []);
+		getAllArticulos()
+		getAllCategorias();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [articulos, getAllArticulos]);
 
 	return (
 		<ArticulosContext.Provider
