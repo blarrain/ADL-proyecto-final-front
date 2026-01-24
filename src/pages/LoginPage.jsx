@@ -13,34 +13,44 @@ import { UserContext } from '../context/userContext';
 // import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-	const [email, setEmail] = useState([]);
-	const [password, setPassword] = useState([]);
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
 
-	const { login, user, token } = useContext(UserContext);
+	const { login } = useContext(UserContext);
 
-	const verificaDatos = async (e) => {
-		e.preventDefault();
-		const response = await login(email, password);
-		alert(response?.message || 'Algo salió mal');
-	};
+	// const verificaDatos = async (e) => {
+	// 	e.preventDefault();
+	// 	const response = await login(email, password);
+	// 	alert(response?.message || 'Algo salió mal');
+	// };
 
-	/*  const validarDatos = (e) => {
-     e.preventDefault();
- 
-     if (!email.trim() || !password.trim()) {
-       Swal.fire("Error", "Debe ingresar todos los campos", "error");
-       return;
-     }
- 
-     if (password.length < 6) {
-       Swal.fire("Error", "Contraseña mínimo 6 caracteres", "error");
-       return;
-     }
- 
-     Swal.fire("Éxito", "Ingreso correcto 🍕", "success");
-     setEmail("");
-     setPass("");
-   }; */
+
+	const iniciarSesion = async (e) => {
+    e.preventDefault();
+
+    if (!email.trim() || !password.trim()) {
+      Swal.fire("Error", "Debe ingresar email y contraseña", "error");
+      return;
+    }
+
+    if (password.length < 6) {
+      Swal.fire(
+        "Error",
+        "La contraseña debe tener al menos 6 caracteres",
+        "error",
+      );
+      return;
+    }
+
+    const result = await login(email, password);
+
+    if (!result.ok) {
+      Swal.fire("Error", result.message, "error");
+      return;
+    }
+
+    Swal.fire("Bienvenido", result.message, "success");
+  };
 
 	return (
 		<Container className='my-5'>
@@ -61,7 +71,7 @@ const LoginPage = () => {
 							<Col md={6} className='p-4'>
 								<h3 className='text-center mb-4'>Ingreso de clientes</h3>
 
-								<Form onSubmit={verificaDatos}>
+								<Form onSubmit={iniciarSesion}>
 									<Form.Group className='mb-3'>
 										<Form.Label>Email</Form.Label>
 										<Form.Control

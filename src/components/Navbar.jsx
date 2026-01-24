@@ -21,9 +21,12 @@ function CollapsibleExample() {
   });
 
   return (
-    <Navbar expand="lg" bg="light" className="navbar-vivero shadow-sm sticky-top">
+    <Navbar
+      expand="lg"
+      bg="light"
+      className="navbar-vivero shadow-sm sticky-top"
+    >
       <Container>
-
         {/* LOGO */}
         <Navbar.Brand as={NavLink} to="/" className="fw-bold text-success">
           <img
@@ -38,42 +41,82 @@ function CollapsibleExample() {
 
         <Navbar.Toggle />
         <Navbar.Collapse>
-
           {/* MENÚ IZQUIERDO */}
           <Nav className="me-auto gap-3">
-            <NavLink to="/store" className={setActiveClass} style={setActiveStyle}>
+            <NavLink
+              to="/store"
+              className={setActiveClass}
+              style={setActiveStyle}
+            >
               Tienda
             </NavLink>
 
-
-            {token && user?.rol == 'admin' ? <NavLink to="/article" className={setActiveClass} style={setActiveStyle}>
-              Artículos
-            </NavLink> : ''}
+            {token && user?.rol == "admin" ? (
+              <NavLink
+                to="/article"
+                className={setActiveClass}
+                style={setActiveStyle}
+              >
+                Artículos
+              </NavLink>
+            ) : (
+              ""
+            )}
           </Nav>
 
           {/* MENÚ DERECHO */}
           <Nav className="align-items-center gap-3">
 
-            {token && user?.rol == 'cliente' ? <NavLink to="/cart" className={setActiveClass} style={setActiveStyle}>
-              <i className="bi bi-cart"></i> Carrito
-            </NavLink> : ''}
+            {token && user?.rol !== 'admin' && (
+              <NavLink to="/cart" className={setActiveClass} style={setActiveStyle}>
+                <i className="bi bi-cart"></i> Carrito
+              </NavLink>
+            )}
 
-            {!token ? <NavLink to="/login" className={setActiveClass} style={setActiveStyle}>
-              Login
-            </NavLink> : ''}
+            {!token ? (
+              <NavLink
+                to="/login"
+                className={setActiveClass}
+                style={setActiveStyle}
+              >
+                Login
+              </NavLink>
+            ) : (
+              ""
+            )}
 
-            {token ? <NavDropdown title="Mi Perfil" id="collapsible-nav-dropdown">
-              <NavDropdown.Item as={NavLink} to="/profile" className={setActiveClass} style={setActiveStyle}>Mis Datos</NavDropdown.Item>
-              {user?.rol == 'cliente' ? <NavDropdown.Item as={NavLink} to="/favorite" className={setActiveClass} style={setActiveStyle}> Mis Favoritos  </NavDropdown.Item> : ''}
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logout}>
-
-                Cerrar Sesión
-              </NavDropdown.Item>
-            </NavDropdown> : ''}
-
+            {token ? (
+              <NavDropdown title="Mi Perfil" id="collapsible-nav-dropdown">
+                <NavDropdown.Item
+                  as={NavLink}
+                  to="/profile"
+                  className={setActiveClass}
+                  style={setActiveStyle}
+                >
+                  Mis Datos
+                </NavDropdown.Item>
+                {user?.rol == "cliente" ? (
+                  <NavDropdown.Item
+                    as={NavLink}
+                    to="/favorite"
+                    className={setActiveClass}
+                    style={setActiveStyle}
+                  >
+                    {" "}
+                    Mis Favoritos{" "}
+                  </NavDropdown.Item>
+                ) : (
+                  ""
+                )}
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={logout}>
+                  Cerrar Sesión
+                </NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              ""
+            )}
           </Nav>
-
         </Navbar.Collapse>
       </Container>
     </Navbar>

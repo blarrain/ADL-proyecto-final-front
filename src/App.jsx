@@ -16,42 +16,32 @@ import DetailArticle from './pages/DetailArticle';
 import FavoritesPages from './pages/FavoritesPage';
 import NotFoundPage from './pages/NotFoundPage';
 
+
 function App() {
-	const { user } = useContext(UserContext);
-	const { token } = useContext(UserContext);
+	const { user , token} = useContext(UserContext);
 
 	return (
 		<>
 			<Navbar />
 			<Routes>
+
+				{/* Publicas */}
 				<Route path='/' element={<HomePage />} />
-				<Route
-					path='/profile'
-					element={token ? <ProfilePage /> : <Navigate to='/login' />}
-				/>
-				<Route
-					path='/login'
-					element={token ? <Navigate to='/profile' /> : <LoginPage />}
-				/>
+				<Route path='/login' element={token ? <Navigate to='/store' /> : <LoginPage />}	/>
 				<Route path='/register' element={<RegisterPage />} />
 				<Route path='/store' element={<StorePage />} />
-				<Route
-					path='/cart'
-					element={token ? <CartPage /> : <Navigate to='/login' />}
-				/>
-				<Route
-					path='/article'
-					element={token && user?.rol === 'admin' ? <ArticlePage /> : <Navigate to='/store' />}
-				/>
-				<Route
-					path='/favorite'
-					element={token ? <NotFoundPage /> : <Navigate to='/login' />}
-				/>
-				<Route
-					path='/detail/:id'
-					element={<DetailArticle />}
-				/>
-				<Route path='*' element={<NotFoundPage />} /> {/* /404 */}
+				<Route path='/detail/:id' element={<DetailArticle />}/>
+				
+				{/* Protegida */}
+				<Route path='/profile' element={token ? <ProfilePage /> : <Navigate to='/login' />} />
+				<Route path='/cart' element={token ? <CartPage /> : <Navigate to='/login' />}/>
+				<Route path='/favorite' element={token ? <FavoritesPages /> : <Navigate to='/login' />}/>
+
+				{/* Protegida + Admin*/}
+				<Route path='/article' element={token && user?.rol === 'admin' ? <ArticlePage /> : <Navigate to='/store' />}/>
+
+				{/* /404 */}
+				<Route path='*' element={<NotFoundPage />} /> 
 			</Routes>
 
 			<Footer />

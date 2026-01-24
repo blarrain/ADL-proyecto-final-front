@@ -72,19 +72,18 @@ const StorePage = () => {
 					{categorias.map((cat) => (
 						<Form.Check
 							disabled
-							key={cat.id}
+							key={cat.id_categoria}
 							type={'checkbox'}
 							label={cat.nombre}
-							id={cat.nombre}
+							id={`cat-${cat.id_categoria}`}
 						/>
 					))}
 				</aside>
 				<main className='bd-main py-3'>
 					<Row className='row-gap-4'>
 						{articulos.map((art) => (
-							<Col xs={12} sm={8} md={6} lg={4}>
+							<Col key={art.id_articulo} xs={12} sm={8} md={6} lg={4}>
 								<CardArticulo
-									key={art.id_articulo}
 									id={art.id_articulo}
 									name={art.nombre}
 									img={art.imagen_url}

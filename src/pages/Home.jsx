@@ -34,7 +34,7 @@ const HomePage = () => {
 					<h2>Últimos artículos de la tienda</h2>
 					<Row className='row-gap-4 my-4'>
 						{articulos.slice(0, 3).map((art) => (
-							<Col xs={12} sm={8} md={6} lg={4}>
+							<Col key={art.id_articulo} xs={12} sm={8} md={6} lg={4}>
 								<CardArticulo
 									key={art.id_articulo}
 									id={art.id_articulo}
