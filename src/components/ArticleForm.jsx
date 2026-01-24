@@ -41,6 +41,7 @@ const ArticleForm = (props) => {
 		if (props.id) {
 			getArticulo(props.id);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.id]);
 
 	const handleSubmit = async (e) => {

@@ -4,12 +4,31 @@ import Stack from 'react-bootstrap/Stack';
 
 import { useContext, useEffect } from 'react';
 import { ArticulosContext } from '../context/ArticulosContext';
+import { UserContext } from '../context/userContext';
 
 const AllArticulosStack = ({ onEdit }) => {
-	const { articulos, getAllArticulos } = useContext(ArticulosContext);
+	const { articulos, getAllArticulos, BASE_URL } = useContext(ArticulosContext);
+	const { token } = useContext(UserContext);
+
+	const removeArticulo = async (id) => {
+		const response = await fetch(`${BASE_URL}/articulos/${id}`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (!response.ok) {
+			alert(`Error: ${response.status} ${response.statusText}`);
+			return;
+		}
+		const data = await response.json();
+		alert(data?.message || 'Artículo eliminado');
+		await getAllArticulos();
+	};
 
 	useEffect(() => {
-			getAllArticulos();
+		getAllArticulos();
 	}, [getAllArticulos]);
 
 	return (
@@ -33,7 +52,10 @@ const AllArticulosStack = ({ onEdit }) => {
 							>
 								Editar <i class='bi bi-pencil-square'></i>
 							</Button>
-							<Button variant='danger' disabled>
+							<Button
+								variant='danger'
+								onClick={() => removeArticulo(art.id_articulo)}
+							>
 								Eliminar <i class='bi bi-trash'></i>
 							</Button>
 						</Stack>
@@ -43,20 +65,4 @@ const AllArticulosStack = ({ onEdit }) => {
 		</div>
 	);
 };
-/* 
-
-function DefaultExample() {
-  return (
-    <ListGroup>
-      <ListGroup.Item>Cras justo odio</ListGroup.Item>
-      <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-      <ListGroup.Item>Morbi leo risus</ListGroup.Item>
-      <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
-      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
-    </ListGroup>
-  );
-}
-
-export default DefaultExample;
-*/
 export default AllArticulosStack;
