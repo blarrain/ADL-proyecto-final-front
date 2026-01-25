@@ -41,7 +41,7 @@ const CardArticulo = (props) => {
   return (
 
     <Card className="mt-0 h-100 shadow-sm border-0">
-      <Card.Img variant="top" src={props.img} />
+      <Card.Img variant="top" src={props.img} onClick={() => verDetalle(props.id)}/>
       <Card.Body>
         <Card.Title>{props.name}</Card.Title>
         <Card.Text>${price.toLocaleString("es-CL")}</Card.Text>

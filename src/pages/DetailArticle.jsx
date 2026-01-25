@@ -15,6 +15,7 @@ import CardArticulo from '../components/CardArticulo';
 // import { articulos, categorias } from '../assets/data/datos';
 import { CartContext } from '../context/CartContext';
 import { ArticulosContext } from '../context/ArticulosContext';
+import { arrow } from '@popperjs/core';
 
 const DetailArticle = () => {
 	const { addToCart } = useContext(CartContext);
@@ -30,30 +31,8 @@ const DetailArticle = () => {
 	};
 	useEffect(() => {
 		getArticulo(id);
-	}, []);
-
-	/*const getArticulo = async (id) => {
-		const response = await fetch(`${BASE_URL}/articulos/${id}`);
-		if (!response.ok) {
-			alert(
-				`Error al obtener datos del artículo: ${response.status} ${response.statusText}`,
-			);
-			return;
-		}
-		const data = await response.json();
-		setNombre(data.nombre);
-		setDescripcion(data.descripcion);
-		setPrecio(data.precio);
-		setStock(data.stock);
-		setImgUrl(data.imagen_url);
-		setIdCategoria(data.id_categoria);
-	};
-
-	useEffect(() => {
-		if (props.id) {
-			getArticulo(props.id);
-		}
-	}, [props.id])*/
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [id]);
 
 	if (!article) {
 		return <div>Cargando...</div>;
@@ -117,7 +96,7 @@ const DetailArticle = () => {
 				<RowCardArticulosFiltrados
 					key={article.id_articulo}
 					categoryId={article.id_categoria}
-					numberOfRows={1}
+					numberOfArticles={3}
 					excludedArticleId={article.id_articulo}
 				/>
 			</Container>

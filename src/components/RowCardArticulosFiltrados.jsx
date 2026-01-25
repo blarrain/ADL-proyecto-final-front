@@ -7,11 +7,7 @@ import CardArticulo from './CardArticulo';
 
 import { ArticulosContext } from '../context/ArticulosContext';
 
-const RowCardArticulosFiltrados = ({
-	categoryId = 1,
-	numberOfRows = 1,
-	excludedArticleId = 1,
-}) => {
+const RowCardArticulosFiltrados = (props) => {
 	const { articulos } = useContext(ArticulosContext);
 
 	return (
@@ -19,10 +15,10 @@ const RowCardArticulosFiltrados = ({
 			{articulos
 				.filter(
 					(art) =>
-						art.id_categoria === categoryId &&
-						art.id_articulo !== excludedArticleId,
+						art.id_categoria === props.categoryId &&
+						art.id_articulo !== props.excludedArticleId,
 				)
-				.slice(0, numberOfRows * 3)
+				.slice(0, props.numberOfArticles)
 				.map((art) => (
 					<Col xs={12} sm={8} md={6} lg={4} key={art.id_articulo}>
 						<CardArticulo

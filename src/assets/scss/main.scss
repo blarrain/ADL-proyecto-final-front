@@ -43,6 +43,6 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 	min-height: 100vh;
 }
 
-.card-link {
+.card-link, .card-img-top {
 	cursor: pointer;
 }
