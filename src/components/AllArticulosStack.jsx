@@ -29,7 +29,8 @@ const AllArticulosStack = ({ onEdit }) => {
 
 	useEffect(() => {
 		getAllArticulos();
-	}, [getAllArticulos]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [articulos]);
 
 	return (
 		<div className='my-5'>

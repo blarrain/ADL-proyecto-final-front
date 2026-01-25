@@ -2,20 +2,22 @@
 
 Vivero JRB
 
+[**→ Backend**](https://github.com/blarrain/ADL-proyecto-final-back)
+
 ## 👥 Integrantes
 
-- Bárbara Larraín
-- Rosa Ramírez
-- Jorge Villegas
+- [Bárbara Larraín](https://github.com/blarrain)
+- [Rosa Ramírez](https://github.com/rramirezroco)
+- [Jorge Villegas](https://github.com/jvillegas36)
 
 ## 🔒 Credenciales de acceso
 
 ### Cliente
 
-- email: cliente@cliente.cl
-- password: 123456
+- **email:** cliente@cliente.cl
+- **password:** 123456
 
 ### Admin
 
-- email: admin@admin.cl
-- password: 123456
+- **email:** admin@admin.cl
+- **password:** 123456

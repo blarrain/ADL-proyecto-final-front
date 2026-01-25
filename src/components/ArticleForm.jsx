@@ -211,8 +211,7 @@ const ArticleForm = (props) => {
 										*
 									</abbr>
 								</Form.Label>
-								<Form.Control
-									as='select'
+								<Form.Select
 									required
 									value={idCategoria}
 									onChange={(e) => setIdCategoria(e.target.value)}
@@ -226,7 +225,7 @@ const ArticleForm = (props) => {
 											{cat.nombre}
 										</option>
 									))}
-								</Form.Control>
+								</Form.Select>
 							</Form.Group>
 						</Col>
 					</Row>
@@ -303,7 +302,7 @@ const ArticleForm = (props) => {
 						/>
 					</Form.Group>
 					<Button type='submit' variant='primary'>
-						{props.id ? 'Editar artículo' : 'Crear artículo'}
+						{props.id ? 'Guardar cambios' : 'Crear artículo'}
 					</Button>
 				</Form>
 			</Col>

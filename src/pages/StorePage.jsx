@@ -14,20 +14,44 @@ import { useContext, useEffect } from 'react';
 import { CartContext } from '../context/CartContext';
 import { UserContext } from '../context/UserContext.jsx';
 import { ArticulosContext } from '../context/ArticulosContext';
+import { useState } from 'react';
 
 const StorePage = () => {
-	const { getAllArticulos, articulos, categorias } = useContext(ArticulosContext);
+	const { categorias, BASE_URL } = useContext(ArticulosContext);
 	const { show } = useContext(CartContext);
-	const { user } = useContext(UserContext);
+	const { token } = useContext(UserContext);
+
+	const [articulos, setArticulos] = useState([]);
+	const [minPrice, setMinPrice] = useState(null);
+	const [maxPrice, setMaxPrice] = useState(null);
+	const [idCategoria, setIdCategoria] = useState('');
+
+	const filterArticulos = async (precio_min, precio_max, id_categoria) => {
+		console.log('filterArticulos called'); //debug
+		let filtros = [];
+		if (precio_min) {
+			filtros.push(`precio_min=${precio_min}`);
+		}
+		if (precio_max) {
+			filtros.push(`precio_max=${precio_max}`);
+		}
+		if (id_categoria) {
+			filtros.push(`id_categoria=${id_categoria}`);
+		}
+		const endpoint = `${BASE_URL}/articulos/filtros?${filtros.join('&')}`;
+		const res = await fetch(endpoint);
+		if (!res.ok) {console.error('Error al cargar artículos')}
+		const data = await res.json();
+		setArticulos(data);
+	};
 
 	useEffect(() => {
-		if (articulos.length === 0) {
-			getAllArticulos();
-		}
-	}, [articulos, getAllArticulos]);
+		filterArticulos(null, null, null);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-	const alerta = user ? 'success' : 'danger';
-	const mensajeAlerta = user ? '¡Producto Agregado!' : '¡Debe iniciar sesión!';
+	const alerta = token ? 'success' : 'danger';
+	const mensajeAlerta = token ? '¡Producto Agregado!' : '¡Debe iniciar sesión!';
 
 	return (
 		<div>
@@ -36,48 +60,70 @@ const StorePage = () => {
 				<Notificacion variant={alerta} mensaje={mensajeAlerta}></Notificacion>
 			)}
 			<Container fluid className='bd-layout py-3'>
-				<aside className='bd-sidebar sticky-top py-3 z-n1'>
+				<aside className='bd-sidebar sticky-top py-3'>
 					<h2>Filtros</h2>{' '}
-					<Form.Label htmlFor='minPrice'>Precio mínimo</Form.Label>
-					<Stack direction='horizontal' gap={3} className='mb-3'>
-						<InputGroup>
-							<InputGroup.Text>$</InputGroup.Text>
-							<Form.Control
-								aria-label='Precio mínimo'
-								id='minPrice'
-								type='number'
-								min={0}
-								disabled
-								readOnly
-							/>
-						</InputGroup>
-						<Button variant='outline-primary disabled'>Filtrar</Button>
+					<Stack as={Form}
+						gap={4}
+						onSubmit={(e) => {
+							e.preventDefault();
+							filterArticulos(minPrice, maxPrice, idCategoria);
+						}}
+						id='filters-form'
+					>
+						<Form.Group>
+							<Form.Label htmlFor='minPrice'>Precio mínimo</Form.Label>
+							<Stack direction='horizontal' gap={3}>
+								<InputGroup>
+									<InputGroup.Text>$</InputGroup.Text>
+									<Form.Control
+										aria-label='Precio mínimo'
+										id='minPrice'
+										type='number'
+										min={0}
+										onChange={(e) => setMinPrice(e.target.value)}
+									/>
+								</InputGroup>
+							</Stack>
+						</Form.Group>
+						<Form.Group>
+							<Form.Label htmlFor='maxPrice'>Precio máximo</Form.Label>
+							<Stack direction='horizontal' gap={3}>
+								<InputGroup>
+									<InputGroup.Text>$</InputGroup.Text>
+									<Form.Control
+										aria-label='Precio máximo'
+										id='maxPrice'
+										type='number'
+										min={0}
+										onChange={(e) => setMaxPrice(e.target.value)}
+									/>
+								</InputGroup>
+							</Stack>
+						</Form.Group>
+						<Form.Group controlId='categoria'>
+							<Form.Label>Categoría</Form.Label>
+							<Form.Select
+								value={idCategoria || ''}
+								onChange={(e) => setIdCategoria(e.target.value)}
+							>
+								<option id='option-all' value=''>
+									Todas las categorías
+								</option>
+								{categorias.map((cat) => (
+									<option
+										key={cat.id_categoria}
+										id={`option-${cat.nombre}`}
+										value={cat.id_categoria}
+									>
+										{cat.nombre}
+									</option>
+								))}
+							</Form.Select>
+						</Form.Group>
+						<Button type='submit' variant='primary'>
+							Filtrar
+						</Button>
 					</Stack>
-					<Form.Label htmlFor='minPrice'>Precio máximo</Form.Label>
-					<Stack direction='horizontal' gap={3} className='mb-5'>
-						<InputGroup>
-							<InputGroup.Text>$</InputGroup.Text>
-							<Form.Control
-								aria-label='Precio máximo'
-								id='maxPrice'
-								type='number'
-								min={0}
-								disabled
-								readOnly
-							/>
-						</InputGroup>
-						<Button variant='outline-primary disabled'>Filtrar</Button>
-					</Stack>
-					<h3>Categoría</h3>
-					{categorias.map((cat) => (
-						<Form.Check
-							disabled
-							key={cat.id_categoria}
-							type={'checkbox'}
-							label={cat.nombre}
-							id={`cat-${cat.id_categoria}`}
-						/>
-					))}
 				</aside>
 				<main className='bd-main py-3'>
 					<Row className='row-gap-4'>
