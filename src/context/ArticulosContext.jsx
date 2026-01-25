@@ -9,24 +9,30 @@ const ArticulosProvider = ({ children }) => {
 	const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5000';
 
 	const getAllArticulos = async () => {
-		const endpoint = `${BASE_URL}/articulos`;
-		const res = await fetch(endpoint);
-		const data = await res.json();
-		setArticulos(data);
-	};
+		try {
+      const res = await fetch(`${BASE_URL}/articulos`);
+      const data = await res.json();
+      setArticulos(data);
+    } catch (error) {
+      console.error('ERROR ARTICULOS:', error);
+    }
+  };
 
 	const getAllCategorias = async () => {
-		const endpoint = `${BASE_URL}/categorias`;
-		const res = await fetch(endpoint);
-		const data = await res.json();
-		setCategorias(data);
-	};
+		try {
+      const res = await fetch(`${BASE_URL}/categorias`);
+      const data = await res.json();
+      setCategorias(data);
+    } catch (error) {
+      console.error('ERROR CATEGORIAS:', error);
+    }
+  };
 
 	useEffect(() => {
 		getAllArticulos()
 		getAllCategorias();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [articulos, getAllArticulos]);
+	}, []);
 
 	return (
 		<ArticulosContext.Provider

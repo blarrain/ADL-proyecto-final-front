@@ -1,118 +1,188 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Container, Row, Col, Card, Form, Button, Image } from "react-bootstrap";
 import Swal from "sweetalert2";
 import InputForm from "../components/Input";
 
-const LoginPage = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [nombres, setNombres] = useState("");
-    const [apellidos, setApellidos] = useState("");
-    const [fecha_nacimiento, setFechaNacimiento] = useState("");
-    const [telefono, setTelefono] = useState("");
-    const [comuna, setComuna] = useState("");
-    const [direccion, setDireccion] = useState("");
+import { RegisterContext } from "../context/RegisterContext";
+import { useNavigate } from "react-router-dom";
 
-    const validarDatos = (e) => {
-        e.preventDefault();
-
-        /* if (!email.trim() || !pass.trim()) {
-            Swal.fire("Error", "Debe ingresar todos los campos", "error");
-            return;
-        } */
-
-        /*  if (pass.length < 6) {
-             Swal.fire("Error", "Contraseña mínimo 6 caracteres", "error");
-             return;
-         } */
+import { useComunas } from "../hooks/UseComunas.js";
 
 
+const RegisterPage = () => {
+  const navigate = useNavigate();
+  const { registerUser, loading:loadingRegister  } = useContext(RegisterContext);
+  const comunas = useComunas();
 
-        Swal.fire("Éxito", "Ingreso correcto ", "success");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [nombres, setNombres] = useState("");
+  const [apellidos, setApellidos] = useState("");
+  const [fecha_nacimiento, setFechaNacimiento] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [comuna, setComuna] = useState("");
+  const [direccion, setDireccion] = useState("");
+
+  const cargarDatos = async (e) => {
+    e.preventDefault();
+
+    if (!email || !password || !nombres || !apellidos) {
+      Swal.fire("Error", "Completa los campos obligatorios", "error");
+      return;
+    }
+
+    if (!comuna) {
+      Swal.fire("Error", "Selecciona una comuna", "error");
+      return;
+    }
 
 
-        setEmail("")
-        setPassword("")
-        setNombres("")
-        setApellidos("")
-        setFechaNacimiento("")
-        setTelefono("")
-        setComuna("")
-        setDireccion("")
+    const payload = {
+      email,
+      password,
+      nombres,
+      apellidos,
+      fecha_nacimiento,
+      telefono,
+      comuna,
+      direccion,
+      imagen_url: null, // o default
     };
 
+    const result = await registerUser(payload);
 
-    return (
-        <Container className="my-5">
-            <Row className="justify-content-center">
-                <Col>
-                    <Card className="shadow">
-                        <Row className="g-0">
+    if (!result.ok) {
+      Swal.fire("Error", result.message, "error");
+      return;
+    }
 
-                            {/* Imagen */}
-                            <Col md={4} className="d-flex align-items-center">
-                                <Image
-                                    src="/src/assets/img/logoJRB.png"
-                                    fluid
-                                />
+    Swal.fire("Registro exitoso", "Ahora puedes iniciar sesión", "success");
 
-                            </Col>
-
-                            {/* Formulario */}
-                            <Col md={8} className="p-4">
-                                <h3 className="text-center mb-4">
-                                    Crear Cuenta
-                                </h3>
-
-                                <Form onSubmit={validarDatos}>
-                                    <Row className="mb-3">
-                                        <Col md={6}>
-                                            <InputForm id="nombres" name="Nombre(s)" onChange={(e) => setNombres(e.target.value)} ></InputForm>
-                                        </Col>
-                                        <Col md={6}>
-                                            <InputForm id="apellidos" name="Apellido(s)" onChange={(e) => setApellidos(e.target.value)} ></InputForm>
-                                        </Col>
-
-                                        <Col md={6}>
-                                            <InputForm id="email" name="Email" type="email" onChange={(e) => setEmail(e.target.value)} ></InputForm>
-                                        </Col>
-                                        <Col md={6}>
-                                            <InputForm id="password" name="Contraseña" type="password" onChange={(e) => setPassword(e.target.value)} ></InputForm>
-                                        </Col>
-
-                                        <Col md={6}>
-                                            <InputForm id="fecha_nacimiento" name="Fecha de Nacimiento" type="date" onChange={(e) => setFechaNacimiento(e.target.value)} ></InputForm>
-                                        </Col>
-                                        <Col md={6}>
-                                            <InputForm id="telefono" name="Teléfono" type="number" onChange={(e) => setTelefono(e.target.value)}></InputForm>
-                                        </Col>
-
-                                        <Col md={6}>
-                                            <InputForm id="comuna" name="Comuna" onChange={(e) => setComuna(e.target.value)}></InputForm>
-                                        </Col>
-                                        <Col md={6}>
-                                            <InputForm id="direccion" name="Dirección" onChange={(e) => setDireccion(e.target.value)}></InputForm>
-                                        </Col>
-                                    </Row>
-
-                                    <Button type="submit" variant="primary" className="w-100">
-                                        Crear Cuenta
-                                    </Button>
+    navigate("/login");
+  };
 
 
-                                    <label className="text-center mt-3 w-100">
-                                        ¿Tienes cuenta?, <Card.Link href="/login"> Inicia Sesión</Card.Link>
-                                    </label>
+  return (
+    <Container className="my-5">
+      <Row className="justify-content-center">
+        <Col>
+          <Card className="shadow">
+            <Row className="g-0">
+              {/* Imagen */}
+              <Col md={4} className="d-flex align-items-center">
+                <Image src="/src/assets/img/logoJRB.png" fluid />
+              </Col>
 
-                                </Form>
+              {/* Formulario */}
+              <Col md={8} className="p-4">
+                <h3 className="text-center mb-4">Crear Cuenta</h3>
 
-                            </Col>
-                        </Row>
-                    </Card>
-                </Col>
+                <Form onSubmit={cargarDatos} autoComplete="off">
+                  <Row className="mb-3">
+                    <Col md={6}>
+                      <InputForm
+                        id="nombres"
+                        name="Nombre(s)"
+                        onChange={(e) => setNombres(e.target.value)}
+                      ></InputForm>
+                    </Col>
+                    <Col md={6}>
+                      <InputForm
+                        id="apellidos"
+                        name="Apellido(s)"
+                        onChange={(e) => setApellidos(e.target.value)}
+                      ></InputForm>
+                    </Col>
+
+                    <Col md={6}>
+                      <InputForm
+                        id="email"
+                        name="Email"
+                        type="email"
+                        autoComplete="new-email"
+                        onChange={(e) => setEmail(e.target.value)}
+                      ></InputForm>
+                    </Col>
+                    <Col md={6}>
+                      <InputForm
+                        id="password"
+                        name="Contraseña"
+                        type="password"
+                        autoComplete="new-password"
+                        onChange={(e) => setPassword(e.target.value)}
+                      ></InputForm>
+                    </Col>
+
+                    <Col md={6}>
+                      <InputForm
+                        id="fecha_nacimiento"
+                        name="Fecha de Nacimiento"
+                        type="date"
+                        onChange={(e) => setFechaNacimiento(e.target.value)}
+                      ></InputForm>
+                    </Col>
+                    <Col md={6}>
+                      <InputForm
+                        id="telefono"
+                        name="Teléfono"
+                        type="number"
+                        onChange={(e) => setTelefono(e.target.value)}
+                      ></InputForm>
+                    </Col>
+
+                    <Col md={6}>
+                      <InputForm
+                        id="comuna"
+                        name="Comuna"
+                        as="select"
+                        value={comuna}
+                        onChange={(e) => setComuna(e.target.value)}
+                        disabled={comunas.length === 0}
+                      >
+                        <option value="">
+                          {comunas.length === 0
+                            ? "Cargando comunas..."
+                            : "Selecciona tu comuna"}
+                        </option>
+
+                        {comunas.map((c) => (
+                          <option key={c} value={c}>
+                            {c}
+                          </option>
+                        ))}
+                      </InputForm>
+                    </Col>
+
+                    <Col md={6}>
+                      <InputForm
+                        id="direccion"
+                        name="Dirección"
+                        onChange={(e) => setDireccion(e.target.value)}
+                      ></InputForm>
+                    </Col>
+                  </Row>
+
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    className="w-100"
+                    disabled={loadingRegister}
+                  >
+                    {loadingRegister ? "Creando cuenta..." : "Crear Cuenta"}
+                  </Button>
+
+                  <label className="text-center mt-3 w-100">
+                    ¿Tienes cuenta?,{" "}
+                    <Card.Link href="/login"> Inicia Sesión</Card.Link>
+                  </label>
+                </Form>
+              </Col>
             </Row>
-        </Container >
-    );
+          </Card>
+        </Col>
+      </Row>
+    </Container>
+  );
 };
 
-export default LoginPage
+export default RegisterPage 

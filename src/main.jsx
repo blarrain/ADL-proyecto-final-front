@@ -8,15 +8,18 @@ import { BrowserRouter } from 'react-router-dom';
 import UserProvider from './context/UserContext.jsx';
 import CartProvider from './context/CartContext.jsx';
 import ArticulosProvider from './context/ArticulosContext.jsx';
+import RegisterProvider from './context/RegisterContext.jsx';
 
 createRoot(document.getElementById('root')).render(
 	<StrictMode>
 		<BrowserRouter>
 			<ArticulosProvider>
 				<UserProvider>
-					<CartProvider>
-						<App />
-					</CartProvider>
+					<RegisterProvider>
+						<CartProvider>
+							<App />
+						</CartProvider>
+					</RegisterProvider>
 				</UserProvider>
 			</ArticulosProvider>
 		</BrowserRouter>

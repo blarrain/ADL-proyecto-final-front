@@ -11,6 +11,7 @@ import {
 import Swal from "sweetalert2";
 import { CartContext } from "../context/CartContext";
 import { UserContext } from "../context/UserContext";
+import { useComunas } from "../hooks/UseComunas.js";
 
 
 
@@ -22,7 +23,7 @@ const CartPage = () => {
     ? `${perfil.nombres} ${perfil.apellidos}`
     : "Invitado";
 
-  const [comunas, setComunas] = useState([]);
+  const comunas = useComunas();
   const [comunaSeleccionada, setComunaSeleccionada] = useState("");
 
   useEffect(() => {
@@ -66,21 +67,6 @@ const CartPage = () => {
     }
   }, [perfil]);
 
-
-  // 🔹 Cargar comunas
-  useEffect(() => {
-    fetch(
-      "https://api.allorigins.win/raw?url=https://apis.digital.gob.cl/dpa/comunas"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        const nombres = data.map((c) => c.nombre);
-        setComunas(nombres);
-      })
-      .catch((err) => {
-        console.error("Error al cargar comunas:", err);
-      });
-  }, []);
 
   return (
     <Container className="py-5">
@@ -176,14 +162,21 @@ const CartPage = () => {
 
                 <div className="mb-3">
                   <small className="text-muted">Comuna</small>
+
                   <select
                     className="form-select"
                     value={comunaSeleccionada}
                     onChange={(e) => setComunaSeleccionada(e.target.value)}
+                    disabled={comunas.length === 0}
                   >
-                    <option value="">Selecciona tu comuna</option>
-                    {comunas.map((c, idx) => (
-                      <option key={idx} value={c}>
+                    <option value="">
+                      {comunas.length === 0
+                        ? "Cargando comunas..."
+                        : "Selecciona tu comuna"}
+                    </option>
+
+                    {comunas.map((c) => (
+                      <option key={c} value={c}>
                         {c}
                       </option>
                     ))}

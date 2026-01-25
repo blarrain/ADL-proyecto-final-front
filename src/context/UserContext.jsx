@@ -59,10 +59,13 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const cargarPerfil = async () => {
-
       if (!token) {
-		 console.log("❌ No hay token en frontend");
+        console.log("❌ No hay token en frontend");
         setPerfil(null);
+        return;
+      }
+
+      if (perfil) {
         return;
       }
 
@@ -73,8 +76,8 @@ const UserProvider = ({ children }) => {
           },
         });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error("Error cargando perfil");
+        const data = await res.json();
+        if (!res.ok) throw new Error("Error cargando perfil");
 
         setPerfil(data.usuario);
       } catch (error) {
@@ -84,7 +87,7 @@ const UserProvider = ({ children }) => {
     };
 
     cargarPerfil();
-  }, [token, BASE_URL]);
+  }, [token, BASE_URL, perfil]);
 
   // Login
   const login = async (email, password) => {
@@ -127,6 +130,20 @@ const UserProvider = ({ children }) => {
     navigate("/login");
   };
 
+  const updateUser = (updatedUser) => {
+    setUser((prev) => ({
+      ...prev,
+      ...updatedUser,
+    }));
+  };
+
+  const updatePerfil = (updatedFields) => {
+    setPerfil((prev) => ({
+      ...prev,
+      ...updatedFields,
+    }));
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -136,6 +153,8 @@ const UserProvider = ({ children }) => {
         cargaUser,
         login,
         logout,
+        updateUser,
+        updatePerfil,
       }}
     >
       {children}

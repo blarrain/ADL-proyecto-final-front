@@ -53,58 +53,64 @@ const LoginPage = () => {
   };
 
 	return (
-		<Container className='my-5'>
-			<Row className='justify-content-center'>
-				<Col>
-					<Card className='shadow'>
-						<Row className='g-0'>
-							{/* Imagen */}
-							<Col md={6}>
-								<Image
-									src='/src/assets/img/logoJRB.png'
-									fluid
-									className='h-100'
-								/>
-							</Col>
+    <Container className="my-5">
+      <Row className="justify-content-center">
+        <Col>
+          <Card className="shadow">
+            <Row className="g-0">
+              {/* Imagen */}
+              <Col md={6}>
+                <Image
+                  src="/src/assets/img/logoJRB.png"
+                  fluid
+                  className="h-100"
+                />
+              </Col>
 
-							{/* Formulario */}
-							<Col md={6} className='p-4'>
-								<h3 className='text-center mb-4'>Ingreso de clientes</h3>
+              {/* Formulario */}
+              <Col md={6} className="p-4">
+                <h3 className="text-center mb-4">Ingreso de clientes</h3>
 
-								<Form onSubmit={iniciarSesion}>
-									<Form.Group className='mb-3'>
-										<Form.Label>Email</Form.Label>
-										<Form.Control
-											type='email'
-											placeholder='name@example.com'
-											onChange={(e) => setEmail(e.target.value)}
-										/>
-									</Form.Group>
+                <Form onSubmit={iniciarSesion} autoComplete="off">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      placeholder="name@example.com"
+                      autoComplete="new-email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </Form.Group>
 
-									<Form.Group className='mb-4'>
-										<Form.Label>Contraseña</Form.Label>
-										<Form.Control
-											type='password'
-											placeholder='Ingrese contraseña'
-											onChange={(e) => setPassword(e.target.value)}
-										/>
-									</Form.Group>
+                  <Form.Group className="mb-4">
+                    <Form.Label>Contraseña</Form.Label>
+                    <Form.Control
+                      type="password"
+                      name="password"
+                      placeholder="Ingrese contraseña"
+                      autoComplete="new-password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </Form.Group>
 
-									<Button type='submit' variant='primary' className='w-100'>
-										Iniciar sesión
-									</Button>
-									<label className='text-center mt-3 w-100'>
-										Si no tienes cuenta puedes{' '}
-										<Card.Link href='/register'> Registrarte</Card.Link>
-									</label>
-								</Form>
-							</Col>
-						</Row>
-					</Card>
-				</Col>
-			</Row>
-		</Container>
-	);
+                  <Button type="submit" variant="primary" className="w-100">
+                    Iniciar sesión
+                  </Button>
+                  <label className="text-center mt-3 w-100">
+                    Si no tienes cuenta puedes{" "}
+                    <Card.Link href="/register"> Registrarte</Card.Link>
+                  </label>
+                </Form>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
+  );
 };
 
 export default LoginPage;

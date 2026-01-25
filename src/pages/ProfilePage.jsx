@@ -1,102 +1,194 @@
-import React, { useContext } from 'react';
-import { UserContext } from '../context/UserContext';
-import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Header from '../components/Header';
-import Stack from 'react-bootstrap/Stack';
+import React, { useContext, useEffect, useState } from "react";
+import { UserContext } from "../context/UserContext";
+import Container from "react-bootstrap/Container";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Header from "../components/Header";
+import Stack from "react-bootstrap/Stack";
+import Swal from "sweetalert2";
+import { useComunas } from "../hooks/UseComunas.js";
+
+const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000";
 
 const ProfilePage = () => {
-	const { user } = useContext(UserContext);
-	return (
-		<div>
-			<Header h1Text='Mi perfil' pText={`Hola, ${user.nombres}`} />
-			<Container>
-				<Col xs={12} sm={10} md={8} lg={4} className='px-1 py-3 mx-auto'>
-					{user ?
-						<Form>
-							<Form.Group controlId='profile.ControlFirstName' className='mb-4'>
-								<Form.Label>Nombre</Form.Label>
-								<Form.Control
-									type='text'
-									value={user.nombres}
-									disabled
-									readOnly
-								/>
-							</Form.Group>
-							<Form.Group controlId='profile.ControlLastName' className='mb-4'>
-								<Form.Label>Apellido</Form.Label>
-								<Form.Control
-									type='text'
-									value={user.apellidos}
-									disabled
-									readOnly
-								/>
-							</Form.Group>
-							<Form.Group controlId='profile.ControlEmail' className='mb-4'>
-								<Form.Label>Email</Form.Label>
-								<Form.Control
-									type='email'
-									value={user.email}
-									disabled
-									readOnly
-								/>
-							</Form.Group>
-							<Form.Group controlId='profile.ControlComuna' className='mb-4'>
-								<Form.Label>Comuna</Form.Label>
-								<Form.Control
-									type='text'
-									value={user.comuna}
-									disabled
-									readOnly
-								/>
-							</Form.Group>
-							<Form.Group controlId='profile.ControlAddress' className='mb-4'>
-								<Form.Label>Dirección</Form.Label>
-								<Form.Control
-									type='text'
-									value={user.direccion}
-									disabled
-									readOnly
-								/>
-							</Form.Group>
-							<Form.Group controlId='profile.ControlPhone' className='mb-4'>
-								<Form.Label>Teléfono</Form.Label>
-								<Form.Control
-									type='text'
-									value={user.telefono}
-									disabled
-									readOnly
-								/>
-							</Form.Group>
-							<Stack direction='horizontal' gap={3}>
-								<Button
-									disabled
-									variant='outline-primary'
-								// onClick={() => allowProfileEdit()}
-								>
-									Editar perfil <i className='bi bi-pencil-square'></i>
-								</Button>
-								<Button
-									variant='danger'
-								// onClick={() => logOut()}
-								>
-									Cerrar sesión
-								</Button>
-							</Stack>
-						</Form>
-						: <p>Inicia sesión para ver tu perfil</p>}
-					{/* <p className='fs-5'><strong>Nombre:</strong></p>
-					<p className='fs-5'><strong>Fecha de nacimiento:</strong></p>
-					<p className='fs-5'><strong>Teléfono:</strong></p>
-					<p className='fs-5'><strong>Dirección:</strong></p>
-					<p className='fs-5'><strong>Email:</strong> nombre@ejemplo.com</p>
-					 */}
-				</Col>
-			</Container>
-		</div>
-	);
+  const { perfil, updatePerfil, logout } = useContext(UserContext);
+  const comunas = useComunas();
+  const [editMode, setEditMode] = useState(false);
+  const [formData, setFormData] = useState({
+    nombres: "",
+    apellidos: "",
+    comuna: "",
+    direccion: "",
+    telefono: "",
+  });
+
+  useEffect(() => {
+    if (perfil) {
+      setFormData({
+        nombres: perfil.nombres || "",
+        apellidos: perfil.apellidos || "",
+        comuna: perfil.comuna || "",
+        direccion: perfil.direccion || "",
+        telefono: perfil.telefono || "",
+      });
+    }
+  }, [perfil]);
+
+
+  const handleChange = ({ target }) => {
+    setFormData((prev) => ({
+      ...prev,
+      [target.name]: target.value,
+    }));
+  };
+
+  const handleSave = async () => {
+    if (!perfil?.id_usuario) return;
+
+    try {
+      const res = await fetch(
+        `${BASE_URL}/usuarios/${perfil.id_usuario}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Error al actualizar perfil");
+      }
+
+      // sincronizar contexto con backend
+      updatePerfil(data.usuario);
+
+      Swal.fire("Perfil actualizado", "", "success");
+      setEditMode(false);
+
+    } catch (error) {
+      console.error("ERROR UPDATE PERFIL:", error);
+      Swal.fire("Error", error.message, "error");
+    }
+  };
+
+  if (!perfil) {
+    return <p className="text-center mt-5">Cargando perfil...</p>;
+  }
+
+  return (
+    <div>
+      <Header h1Text="Mi perfil" pText={`Hola, ${perfil.nombres}`} />
+
+      <Container>
+        <Col xs={12} sm={10} md={8} lg={4} className="px-1 py-3 mx-auto">
+          <Form>
+            <Form.Group className="mb-4">
+              <Form.Label>Nombre</Form.Label>
+              <Form.Control
+                type="text"
+                name="nombres"
+                value={formData.nombres}
+                onChange={handleChange}
+                disabled={!editMode}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-4">
+              <Form.Label>Apellido</Form.Label>
+              <Form.Control
+                type="text"
+                name="apellidos"
+                value={formData.apellidos}
+                onChange={handleChange}
+                disabled={!editMode}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-4">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                value={perfil.email}
+                disabled
+                readOnly
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-4">
+              <Form.Label>Comuna</Form.Label>
+
+              <Form.Select
+                name="comuna"
+                value={formData.comuna}
+                onChange={handleChange}
+                disabled={!editMode || comunas.length === 0}
+              >
+                <option value="">
+                  {comunas.length === 0
+                    ? "Cargando comunas..."
+                    : "Selecciona tu comuna"}
+                </option>
+
+                {comunas.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-4">
+              <Form.Label>Dirección</Form.Label>
+              <Form.Control
+                type="text"
+                name="direccion"
+                value={formData.direccion}
+                onChange={handleChange}
+                disabled={!editMode}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-4">
+              <Form.Label>Teléfono</Form.Label>
+              <Form.Control
+                type="text"
+                name="telefono"
+                value={formData.telefono}
+                onChange={handleChange}
+                disabled={!editMode}
+              />
+            </Form.Group>
+
+            <Stack direction="horizontal" gap={3}>
+              {!editMode ? (
+                <Button
+                  variant="outline-primary"
+                  onClick={() => setEditMode(true)}
+                >
+                  Editar perfil
+                </Button>
+              ) : (
+                <Button variant="success" onClick={handleSave}>
+                  Guardar cambios
+                </Button>
+              )}
+
+              <Button variant="danger" onClick={logout}>
+                Cerrar sesión
+              </Button>
+            </Stack>
+          </Form>
+        </Col>
+      </Container>
+    </div>
+  );
 };
 
 export default ProfilePage;
+
