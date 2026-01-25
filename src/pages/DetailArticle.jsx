@@ -15,7 +15,6 @@ import CardArticulo from '../components/CardArticulo';
 // import { articulos, categorias } from '../assets/data/datos';
 import { CartContext } from '../context/CartContext';
 import { ArticulosContext } from '../context/ArticulosContext';
-import { arrow } from '@popperjs/core';
 
 const DetailArticle = () => {
 	const { addToCart } = useContext(CartContext);
