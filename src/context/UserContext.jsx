@@ -142,6 +142,24 @@ const UserProvider = ({ children }) => {
       ...prev,
       ...updatedFields,
     }));
+
+    // sincronizar user (para Navbar)
+    setUser((prev) => ({
+      ...prev,
+      ...updatedFields,
+    }));
+
+    
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) {
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...storedUser,
+          ...updatedFields,
+        }),
+      );
+    }
   };
 
   return (
