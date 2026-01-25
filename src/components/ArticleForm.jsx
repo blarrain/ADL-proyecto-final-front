@@ -302,7 +302,7 @@ const ArticleForm = (props) => {
 						/>
 					</Form.Group>
 					<Button type='submit' variant='primary'>
-						{props.id ? 'Editar artículo' : 'Crear artículo'}
+						{props.id ? 'Guardar cambios' : 'Crear artículo'}
 					</Button>
 				</Form>
 			</Col>

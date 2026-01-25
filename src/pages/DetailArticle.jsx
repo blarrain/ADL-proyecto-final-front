@@ -26,7 +26,6 @@ const DetailArticle = () => {
 	const cantEnCarro =
 		cart.find((e) => e.id_articulo === Number(id))?.quantity || 0;
 
-
 	const getArticulo = async (id) => {
 		const response = await fetch(`${BASE_URL}/articulos/${id}`);
 		const articleData = await response.json();
@@ -95,17 +94,19 @@ const DetailArticle = () => {
 							{cantEnCarro > 0 && (
 								<div>
 									<Button
+									title='Quitar 1 del carrito'
 										variant='outline-danger'
 										onClick={() => restaCart(Number(id))}
 									>
-										−
+										<i class="bi bi-dash"></i>
 									</Button>
 									<span className='fs-5 py-2 px-4'>{cantEnCarro}</span>
 									<Button
+									title='Agregar 1 al carrito'
 										variant='outline-primary'
 										onClick={() => sumaCart(Number(id))}
 									>
-										+
+										<i class="bi bi-plus"></i>
 									</Button>
 								</div>
 							)}
