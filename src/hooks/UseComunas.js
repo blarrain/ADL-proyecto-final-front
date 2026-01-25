@@ -1,15 +1,20 @@
+
 import { useEffect, useState } from "react";
 
 export const useComunas = () => {
   const [comunas, setComunas] = useState([]);
 
   useEffect(() => {
-    fetch(
-      "https://api.allorigins.win/raw?url=https://apis.digital.gob.cl/dpa/comunas"
-    )
-      .then((res) => res.json())
-      .then((data) => setComunas(data.map((c) => c.nombre)))
-      .catch(console.error);
+    fetch("http://localhost:5000/comunas")
+      .then((res) => {
+        if (!res.ok) throw new Error("Error cargando comunas");
+        return res.json();
+      })
+      .then((data) => setComunas(data))
+      .catch((err) => {
+        console.error("Error useComunas:", err.message);
+        setComunas([]);
+      });
   }, []);
 
   return comunas;
