@@ -102,8 +102,7 @@ const StorePage = () => {
 						</Form.Group>
 						<Form.Group controlId='categoria'>
 							<Form.Label>Categoría</Form.Label>
-							<Form.Control
-								as='select'
+							<Form.Select
 								value={idCategoria || ''}
 								onChange={(e) => setIdCategoria(e.target.value)}
 							>
@@ -119,7 +118,7 @@ const StorePage = () => {
 										{cat.nombre}
 									</option>
 								))}
-							</Form.Control>
+							</Form.Select>
 						</Form.Group>
 						<Button type='submit' variant='primary'>
 							Filtrar
