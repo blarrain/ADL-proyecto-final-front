@@ -8,10 +8,15 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import miLogo from './../assets/img/logoJRB.png';
 import { UserContext } from '../context/UserContext';
-
+import { CartContext } from '../context/CartContext';
 
 function CollapsibleExample() {
   const { user, token, logout } = useContext(UserContext)
+   const { cart, total } = useContext(CartContext);
+
+   const hayProductos = cart.length > 0;
+
+  const nombreCompleto = token && user ? `${user.nombres} ${user.apellidos}` : "";
 
   const setActiveClass = ({ isActive }) =>
     isActive ? "nav-link active fw-bold text-success" : "nav-link";
@@ -67,11 +72,30 @@ function CollapsibleExample() {
           {/* MENÚ DERECHO */}
           <Nav className="align-items-center gap-3">
 
+            {token && (
+              <span className="fw-semibold text-success me-2">
+                <i className="bi bi-person-circle me-1"></i>
+                {nombreCompleto}
+              </span>
+            )}
+
             {token && user?.rol !== 'admin' && (
-              <NavLink to="/cart" className={setActiveClass} style={setActiveStyle}>
-                <i className="bi bi-cart"></i> Carrito
+              <NavLink
+                to="/cart"
+                className={`nav-link fw-semibold ${
+                  hayProductos ? "text-success" : "text-muted"
+                }`}
+              >
+                <i
+                  className={`bi ${
+                    hayProductos ? "bi-cart-fill" : "bi-cart"
+                  } me-1`}
+                ></i>
+                ${total.toLocaleString("es-CL")}
               </NavLink>
             )}
+
+
 
             {!token ? (
               <NavLink
