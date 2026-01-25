@@ -17,11 +17,15 @@ import { CartContext } from '../context/CartContext';
 import { ArticulosContext } from '../context/ArticulosContext';
 
 const DetailArticle = () => {
-	const { addToCart } = useContext(CartContext);
+	const { addToCart, cart, sumaCart, restaCart } =
+		useContext(CartContext);
 	const [article, setArticle] = useState(null);
 	// const [category, setCategory] = useState(null);
 	const { BASE_URL } = useContext(ArticulosContext);
 	const { id } = useParams();
+	const cantEnCarro =
+		cart.find((e) => e.id_articulo === Number(id))?.quantity || 0;
+
 
 	const getArticulo = async (id) => {
 		const response = await fetch(`${BASE_URL}/articulos/${id}`);
@@ -72,20 +76,39 @@ const DetailArticle = () => {
 							${Number(article.precio).toLocaleString('es-CL')}
 						</p>
 						<div className='w-full text-center'>
-							<Button
-								variant='primary'
-								size='lg'
-								onClick={() =>
-									addToCart({
-										id_articulo: article.id_articulo,
-										nombre: article.nombre,
-										precio: Number(article.precio),
-										imagen_url: article.imagen_url,
-									})
-								}
-							>
-								Agregar al carrito <i className='bi bi-cart-plus'></i>
-							</Button>
+							{cantEnCarro === 0 && (
+								<Button
+									variant='primary'
+									size='lg'
+									onClick={() =>
+										addToCart({
+											id_articulo: article.id_articulo,
+											nombre: article.nombre,
+											precio: Number(article.precio),
+											imagen_url: article.imagen_url,
+										})
+									}
+								>
+									Agregar al carrito <i className='bi bi-cart-plus'></i>
+								</Button>
+							)}
+							{cantEnCarro > 0 && (
+								<div>
+									<Button
+										variant='outline-danger'
+										onClick={() => restaCart(Number(id))}
+									>
+										−
+									</Button>
+									<span className='fs-5 py-2 px-4'>{cantEnCarro}</span>
+									<Button
+										variant='outline-primary'
+										onClick={() => sumaCart(Number(id))}
+									>
+										+
+									</Button>
+								</div>
+							)}
 						</div>
 					</Col>
 				</Row>
