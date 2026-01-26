@@ -15,14 +15,16 @@ import CardArticulo from '../components/CardArticulo';
 // import { articulos, categorias } from '../assets/data/datos';
 import { CartContext } from '../context/CartContext';
 import { ArticulosContext } from '../context/ArticulosContext';
+import Swal from 'sweetalert2';
 
 const DetailArticle = () => {
-	const { addToCart, cart, sumaCart, restaCart } =
+	const { addToCart, cart, sumaCart, restaCart, setMostrar } =
 		useContext(CartContext);
 	const [article, setArticle] = useState(null);
 	// const [category, setCategory] = useState(null);
 	const { BASE_URL } = useContext(ArticulosContext);
 	const { id } = useParams();
+	const token = localStorage.getItem("token");
 	const cantEnCarro =
 		cart.find((e) => e.id_articulo === Number(id))?.quantity || 0;
 
@@ -35,6 +37,36 @@ const DetailArticle = () => {
 		getArticulo(id);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id]);
+
+	const handleAddToCart = () => {
+		if (!token) {
+			Swal.fire(
+				"Atención",
+				"Debes iniciar sesión para agregar al carrito",
+				"warning",
+			);
+			return;
+		}
+
+		setMostrar(true);
+		addToCart({
+			id_articulo: article.id_articulo,
+			nombre: article.nombre,
+			precio: Number(article.precio),
+			imagen_url: article.imagen_url,
+		});
+
+		Swal.fire({
+			toast: true,
+			position: "top-end",
+			icon: "success",
+			title: "Producto agregado al carrito",
+			showConfirmButton: false,
+			timer: 1500,
+			timerProgressBar: true,
+		});
+	};
+
 
 	if (!article) {
 		return <div>Cargando...</div>;
@@ -79,14 +111,7 @@ const DetailArticle = () => {
 								<Button
 									variant='primary'
 									size='lg'
-									onClick={() =>
-										addToCart({
-											id_articulo: article.id_articulo,
-											nombre: article.nombre,
-											precio: Number(article.precio),
-											imagen_url: article.imagen_url,
-										})
-									}
+									onClick={handleAddToCart}
 								>
 									Agregar al carrito <i className='bi bi-cart-plus'></i>
 								</Button>
@@ -94,7 +119,7 @@ const DetailArticle = () => {
 							{cantEnCarro > 0 && (
 								<div>
 									<Button
-									title='Quitar 1 del carrito'
+										title='Quitar 1 del carrito'
 										variant='outline-danger'
 										onClick={() => restaCart(Number(id))}
 									>
@@ -102,7 +127,7 @@ const DetailArticle = () => {
 									</Button>
 									<span className='fs-5 py-2 px-4'>{cantEnCarro}</span>
 									<Button
-									title='Agregar 1 al carrito'
+										title='Agregar 1 al carrito'
 										variant='outline-primary'
 										onClick={() => sumaCart(Number(id))}
 									>
