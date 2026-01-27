@@ -267,7 +267,7 @@ const ArticleForm = (props) => {
 						<Col>
 							<Form.Group controlId='article.stock'>
 								<Form.Label>
-									Stock inicial{' '}
+									Stock{' '}
 									<abbr title='requerido' className='text-danger'>
 										*
 									</abbr>
@@ -326,7 +326,7 @@ const ArticleForm = (props) => {
 										imgUrl ||
 										'https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg'
 									}
-									className='object-fit-cover rounded-1'
+									className='object-fit-cover rounded'
 								/>
 							</Ratio>
 						</Col>
