@@ -18,6 +18,7 @@ const RowCardArticulosFiltrados = (props) => {
 						art.id_categoria === props.categoryId &&
 						art.id_articulo !== props.excludedArticleId,
 				)
+				.sort(() => Math.random() - 0.5)
 				.slice(0, props.numberOfArticles)
 				.map((art) => (
 					<Col xs={12} sm={8} md={6} lg={4} key={art.id_articulo}>

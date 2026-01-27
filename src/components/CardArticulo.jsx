@@ -139,8 +139,8 @@ const CardArticulo = (props) => {
       />
       <Card.Body>
         <Card.Title>{props.name}</Card.Title>
-        <Card.Text className="m-0">${price.toLocaleString("es-CL")}</Card.Text>
-        <Card.Text >Stock: {props.stock}</Card.Text>
+        <Card.Text className="my-2 text-center fs-5">${price.toLocaleString("es-CL")}</Card.Text>
+        <Card.Text className='text-secondary fw-light'>Stock: {props.stock} unidades</Card.Text>							
         <Card.Link className="py-3" onClick={() => verDetalle(props.id)}>
           Ver detalles{" "}
         </Card.Link>
