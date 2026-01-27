@@ -6,7 +6,8 @@ import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
 import Ratio from 'react-bootstrap/Ratio';
 import Image from 'react-bootstrap/Image';
-import Alert from 'react-bootstrap/Alert';
+
+import Swal from 'sweetalert2';
 
 import { useContext, useState, useEffect } from 'react';
 import { ArticulosContext } from '../context/ArticulosContext';
@@ -22,7 +23,6 @@ const ArticleForm = (props) => {
 	const [stock, setStock] = useState('');
 	const [descripcion, setDescripcion] = useState('');
 	const [imgUrl, setImgUrl] = useState('');
-	const [show, setShow] = useState(false);
 
 	const getArticulo = async (id) => {
 		const response = await fetch(`${BASE_URL}/articulos/${id}`);
@@ -52,7 +52,6 @@ const ArticleForm = (props) => {
 			setImgUrl('');
 			setIdCategoria(1);
 		}
-		setShow(false);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.id]);
 
@@ -104,23 +103,22 @@ const ArticleForm = (props) => {
 				activo,
 			}),
 		});
-		console.log(
-			JSON.stringify({
-				nombre,
-				descripcion,
-				precio,
-				stock,
-				imagen_url,
-				id_categoria,
-				activo,
-			}),
-		);
+
 		if (!response.ok) {
 			alert(`Error: ${response.status} ${response.statusText}`);
 			return;
 		}
 		const data = await response.json();
-		alert(data?.message || 'Artículo creado exitosamente');
+		Swal.fire({
+			toast: true,
+			position: 'bottom',
+			icon: 'success',
+			title: data?.message || 'Artículo creado exitosamente',
+			showConfirmButton: false,
+			timer: 5000,
+			timerProgressBar: true,
+		});
+
 		setNombre('');
 		setStock('');
 		setDescripcion('');
@@ -160,9 +158,17 @@ const ArticleForm = (props) => {
 			alert(`Error: ${response.status} ${response.statusText}`);
 			return;
 		}
-		// const data = await response.json();
-		// alert(data?.message || 'Artículo actualizado exitosamente');
-		setShow(true);
+
+		Swal.fire({
+			toast: true,
+			position: 'bottom',
+			icon: 'success',
+			title: `Se han guardado tus cambios`,
+			showConfirmButton: false,
+			timer: 5000,
+			timerProgressBar: true,
+		});
+
 		await getAllArticulos();
 	};
 
@@ -340,9 +346,9 @@ const ArticleForm = (props) => {
 						:	'Crear artículo'}
 					</Button>
 				</Form>
-				<Alert show={show} variant='success' className='mt-3 fs-small'>
+				{/* <Alert show={show} variant='success' className='mt-3 fs-small'>
 					Tus cambios se han guardado
-				</Alert>
+				</Alert> */}
 			</Col>
 		</Row>
 	);
