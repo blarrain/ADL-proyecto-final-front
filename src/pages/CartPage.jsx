@@ -99,8 +99,11 @@ const CartPage = () => {
 
                     <Col md={3}>
                       <h6 className="mb-1">{item.nombre}</h6>
-                      <small className="text-muted">
+                      <small className="text-muted d-block">
                         ID: {item.id_articulo}
+                      </small>
+                      <small className="text-muted d-block">
+                        STOCK: {item.stock}
                       </small>
                     </Col>
 

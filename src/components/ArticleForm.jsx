@@ -150,6 +150,12 @@ const ArticleForm = (props) => {
 		}
 		const data = await response.json();
 		alert(data?.message || 'Artículo actualizado exitosamente');
+		setNombre('');
+		setStock('');
+		setDescripcion('');
+		setPrecio('');
+		setImgUrl('');
+		setIdCategoria(1);
 		await getAllArticulos();
 	};
 
@@ -185,7 +191,7 @@ const ArticleForm = (props) => {
 								/>
 							</Col>
 						</Form.Group>
-					:	null}
+						: null}
 					<Row className='mb-3'>
 						<Col>
 							<Form.Group controlId='article.name'>
@@ -199,6 +205,7 @@ const ArticleForm = (props) => {
 									type='text'
 									required
 									value={nombre}
+									placeholder='Nombre'
 									onChange={(e) => setNombre(e.target.value)}
 								/>
 							</Form.Group>
@@ -246,6 +253,7 @@ const ArticleForm = (props) => {
 										step={1}
 										required
 										value={precio}
+										placeholder='0'
 										onChange={(e) => setPrecio(e.target.value)}
 									/>
 								</InputGroup>
@@ -266,6 +274,7 @@ const ArticleForm = (props) => {
 										step={1}
 										required
 										value={stock}
+										placeholder='0'
 										onChange={(e) => setStock(e.target.value)}
 									/>
 								</InputGroup>
@@ -298,6 +307,7 @@ const ArticleForm = (props) => {
 							type='url'
 							required
 							value={imgUrl}
+							placeholder='https://...'
 							onChange={(e) => setImgUrl(e.target.value)}
 						/>
 					</Form.Group>

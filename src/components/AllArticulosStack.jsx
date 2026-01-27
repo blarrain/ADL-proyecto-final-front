@@ -29,8 +29,7 @@ const AllArticulosStack = ({ onEdit }) => {
 
 	useEffect(() => {
 		getAllArticulos();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [articulos]);
+	}, []);
 
 	return (
 		<div className='my-5'>
@@ -51,13 +50,13 @@ const AllArticulosStack = ({ onEdit }) => {
 								variant='outline-primary'
 								onClick={() => onEdit(art.id_articulo)}
 							>
-								Editar <i class='bi bi-pencil-square'></i>
+								Editar <i className='bi bi-pencil-square'></i>
 							</Button>
 							<Button
 								variant='danger'
 								onClick={() => removeArticulo(art.id_articulo)}
 							>
-								Eliminar <i class='bi bi-trash'></i>
+								Eliminar <i className='bi bi-trash'></i>
 							</Button>
 						</Stack>
 					</ListGroup.Item>

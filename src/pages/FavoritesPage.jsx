@@ -81,6 +81,7 @@ const FavoritesPage = () => {
       nombre: item.nombre,
       precio: item.precio,
       imagen_url: item.imagen_url,
+      stock: item.stock
     });
     Swal.fire("Agregado", "Articulo agregado al carrito", "success");
   };

@@ -26,6 +26,7 @@ const RowCardArticulosFiltrados = (props) => {
 							name={art.nombre}
 							img={art.imagen_url}
 							price={art.precio}
+							stock={art.stock}
 						/>
 					</Col>
 				))}

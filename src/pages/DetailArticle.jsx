@@ -54,6 +54,7 @@ const DetailArticle = () => {
 			nombre: article.nombre,
 			precio: Number(article.precio),
 			imagen_url: article.imagen_url,
+			stock: article.stock
 		});
 
 		Swal.fire({

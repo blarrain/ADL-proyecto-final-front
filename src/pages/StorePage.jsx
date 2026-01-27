@@ -27,7 +27,6 @@ const StorePage = () => {
 	const [idCategoria, setIdCategoria] = useState('');
 
 	const filterArticulos = async (precio_min, precio_max, id_categoria) => {
-		console.log('filterArticulos called'); //debug
 		let filtros = [];
 		if (precio_min) {
 			filtros.push(`precio_min=${precio_min}`);
@@ -40,7 +39,7 @@ const StorePage = () => {
 		}
 		const endpoint = `${BASE_URL}/articulos/filtros?${filtros.join('&')}`;
 		const res = await fetch(endpoint);
-		if (!res.ok) {console.error('Error al cargar artículos')}
+		if (!res.ok) { console.error('Error al cargar artículos') }
 		const data = await res.json();
 		setArticulos(data);
 	};
@@ -134,6 +133,7 @@ const StorePage = () => {
 									name={art.nombre}
 									img={art.imagen_url}
 									price={art.precio}
+									stock={art.stock}
 								/>
 							</Col>
 						))}
