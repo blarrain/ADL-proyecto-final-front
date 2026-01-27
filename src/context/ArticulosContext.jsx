@@ -10,23 +10,23 @@ const ArticulosProvider = ({ children }) => {
 
 	const getAllArticulos = async () => {
 		try {
-      const res = await fetch(`${BASE_URL}/articulos`);
-      const data = await res.json();
-      setArticulos(data);
-    } catch (error) {
-      console.error('ERROR ARTICULOS:', error);
-    }
-  };
+			const res = await fetch(`${BASE_URL}/articulos`);
+			const data = await res.json();
+			setArticulos(data);
+		} catch (error) {
+			console.error('ERROR ARTICULOS:', error);
+		}
+	};
 
 	const getAllCategorias = async () => {
 		try {
-      const res = await fetch(`${BASE_URL}/categorias`);
-      const data = await res.json();
-      setCategorias(data);
-    } catch (error) {
-      console.error('ERROR CATEGORIAS:', error);
-    }
-  };
+			const res = await fetch(`${BASE_URL}/categorias`);
+			const data = await res.json();
+			setCategorias(data);
+		} catch (error) {
+			console.error('ERROR CATEGORIAS:', error);
+		}
+	};
 
 	useEffect(() => {
 		getAllArticulos()

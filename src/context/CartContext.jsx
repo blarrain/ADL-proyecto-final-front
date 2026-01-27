@@ -1,11 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
+import Swal from "sweetalert2";
 
 export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
-   const { user } = useContext(UserContext);
-   const cartKey = user?.id_usuario
+  const { user } = useContext(UserContext);
+  const cartKey = user?.id_usuario
     ? `cart_${user.id_usuario}`
     : "cart_guest";
 
@@ -50,6 +51,7 @@ const CartProvider = ({ children }) => {
           nombre: articulo.nombre,
           precio: articulo.precio,
           imagen_url: articulo.imagen_url,
+          stock: articulo.stock,
           quantity: 1,
         },
       ];
@@ -57,13 +59,27 @@ const CartProvider = ({ children }) => {
   };
 
   const sumaCart = (id_articulo) => {
-    setCart((prev) =>
-      prev.map((item) =>
-        item.id_articulo === id_articulo
+    setCart((prev) => {
+      const detalle = prev.find((item) => item.id_articulo === id_articulo);
+      if (detalle && detalle.quantity >= detalle.stock) {
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "warning",
+          title: `Stock Máximo ${detalle.stock}`,
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+        });
+        return prev;
+      }
+
+      return prev.map((item) =>
+        item.id_articulo === id_articulo && item.stock > item.quantity
           ? { ...item, quantity: item.quantity + 1 }
-          : item,
-      ),
-    );
+          : item
+      );
+    });
   };
 
   const restaCart = (id_articulo) => {

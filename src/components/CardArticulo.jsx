@@ -8,8 +8,7 @@ import { CartContext } from "../context/CartContext";
 import Swal from "sweetalert2";
 
 const CardArticulo = (props) => {
-  const { cart, sumaCart, restaCart, addToCart, setMostrar } =
-    useContext(CartContext);
+  const { cart, sumaCart, restaCart, addToCart, setMostrar } = useContext(CartContext);
   const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000";
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -117,6 +116,7 @@ const CardArticulo = (props) => {
       nombre: props.name,
       precio: price,
       imagen_url: props.img,
+      stock: props.stock
     });
 
     Swal.fire({
@@ -139,7 +139,8 @@ const CardArticulo = (props) => {
       />
       <Card.Body>
         <Card.Title>{props.name}</Card.Title>
-        <Card.Text>${price.toLocaleString("es-CL")}</Card.Text>
+        <Card.Text className="m-0">${price.toLocaleString("es-CL")}</Card.Text>
+        <Card.Text >Stock: {props.stock}</Card.Text>
         <Card.Link className="py-3" onClick={() => verDetalle(props.id)}>
           Ver detalles{" "}
         </Card.Link>
