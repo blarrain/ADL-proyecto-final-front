@@ -33,7 +33,12 @@ const HomePage = () => {
 					{/* <CarruselArticulos/> */}
 					<h2>Últimos artículos de la tienda</h2>
 					<Row className='row-gap-4 my-4'>
-						{articulos.slice(0, 3).map((art) => (
+						{articulos
+						.sort((a, b) => {
+							const fechaDiff = new Date(b.fecha_creacion) - new Date(a.fecha_creacion)
+							return fechaDiff !== 0 ? fechaDiff : b.id_articulo - a.id_articulo})
+						.slice(0, 3)
+						.map((art) => (
 							<Col key={art.id_articulo} xs={12} sm={8} md={6} lg={4}>
 								<CardArticulo
 									key={art.id_articulo}
