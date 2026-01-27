@@ -4,6 +4,9 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Stack from 'react-bootstrap/Stack';
+import Ratio from 'react-bootstrap/Ratio';
+import Image from 'react-bootstrap/Image';
+import Alert from 'react-bootstrap/Alert';
 
 import { useContext, useState, useEffect } from 'react';
 import { ArticulosContext } from '../context/ArticulosContext';
@@ -19,6 +22,7 @@ const ArticleForm = (props) => {
 	const [stock, setStock] = useState('');
 	const [descripcion, setDescripcion] = useState('');
 	const [imgUrl, setImgUrl] = useState('');
+	const [show, setShow] = useState(false);
 
 	const getArticulo = async (id) => {
 		const response = await fetch(`${BASE_URL}/articulos/${id}`);
@@ -40,7 +44,15 @@ const ArticleForm = (props) => {
 	useEffect(() => {
 		if (props.id) {
 			getArticulo(props.id);
+		} else {
+			setNombre('');
+			setDescripcion('');
+			setPrecio('');
+			setStock('');
+			setImgUrl('');
+			setIdCategoria(1);
 		}
+		setShow(false);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.id]);
 
@@ -148,14 +160,9 @@ const ArticleForm = (props) => {
 			alert(`Error: ${response.status} ${response.statusText}`);
 			return;
 		}
-		const data = await response.json();
-		alert(data?.message || 'Artículo actualizado exitosamente');
-		setNombre('');
-		setStock('');
-		setDescripcion('');
-		setPrecio('');
-		setImgUrl('');
-		setIdCategoria(1);
+		// const data = await response.json();
+		// alert(data?.message || 'Artículo actualizado exitosamente');
+		setShow(true);
 		await getAllArticulos();
 	};
 
@@ -191,7 +198,7 @@ const ArticleForm = (props) => {
 								/>
 							</Col>
 						</Form.Group>
-						: null}
+					:	null}
 					<Row className='mb-3'>
 						<Col>
 							<Form.Group controlId='article.name'>
@@ -205,7 +212,6 @@ const ArticleForm = (props) => {
 									type='text'
 									required
 									value={nombre}
-									placeholder='Nombre'
 									onChange={(e) => setNombre(e.target.value)}
 								/>
 							</Form.Group>
@@ -253,7 +259,6 @@ const ArticleForm = (props) => {
 										step={1}
 										required
 										value={precio}
-										placeholder='0'
 										onChange={(e) => setPrecio(e.target.value)}
 									/>
 								</InputGroup>
@@ -274,7 +279,6 @@ const ArticleForm = (props) => {
 										step={1}
 										required
 										value={stock}
-										placeholder='0'
 										onChange={(e) => setStock(e.target.value)}
 									/>
 								</InputGroup>
@@ -296,25 +300,49 @@ const ArticleForm = (props) => {
 							onChange={(e) => setDescripcion(e.target.value)}
 						/>
 					</Form.Group>
-					<Form.Group controlId='article.img' className='mb-3'>
-						<Form.Label>
-							URL de imagen{' '}
-							<abbr title='requerido' className='text-danger'>
-								*
-							</abbr>
-						</Form.Label>
-						<Form.Control
-							type='url'
-							required
-							value={imgUrl}
-							placeholder='https://...'
-							onChange={(e) => setImgUrl(e.target.value)}
-						/>
-					</Form.Group>
+					<Row className='mb-3'>
+						<Col>
+							<Form.Group controlId='article.img'>
+								<Form.Label>
+									URL de imagen{' '}
+									<abbr title='requerido' className='text-danger'>
+										*
+									</abbr>
+								</Form.Label>
+								<Form.Control
+									as='textarea'
+									rows={3}
+									type='url'
+									required
+									value={imgUrl}
+									onChange={(e) => setImgUrl(e.target.value)}
+								/>
+							</Form.Group>
+						</Col>
+						<Col xs={12} lg={4}>
+							<Ratio aspectRatio='4x3'>
+								<Image
+									src={
+										imgUrl ||
+										'https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg'
+									}
+									className='object-fit-cover rounded-1'
+								/>
+							</Ratio>
+						</Col>
+					</Row>
+
 					<Button type='submit' variant='primary'>
-						{props.id ? 'Guardar cambios' : 'Crear artículo'}
+						{props.id ?
+							<>
+								Guardar cambios <i className='bi bi-floppy2-fill ms-1'></i>
+							</>
+						:	'Crear artículo'}
 					</Button>
 				</Form>
+				<Alert show={show} variant='success' className='mt-3 fs-small'>
+					Tus cambios se han guardado
+				</Alert>
 			</Col>
 		</Row>
 	);
