@@ -23,6 +23,8 @@ const CartPage = () => {
     ? `${perfil.nombres} ${perfil.apellidos}`
     : "Invitado";
 
+  const cantidadTotal = cart.reduce((acumulador, objeto) => acumulador + objeto.quantity, 0);
+
   const comunas = useComunas();
   const [comunaSeleccionada, setComunaSeleccionada] = useState("");
 
@@ -205,7 +207,7 @@ const CartPage = () => {
 
                 <div className="d-flex justify-content-between mb-2">
                   <span>Productos</span>
-                  <strong>{cart.length}</strong>
+                  <strong>{cantidadTotal}</strong>
                 </div>
 
                 <div className="d-flex justify-content-between mb-3">
