@@ -12,9 +12,9 @@ import { CartContext } from '../context/CartContext';
 
 function CollapsibleExample() {
   const { user, token, logout } = useContext(UserContext)
-   const { cart, total } = useContext(CartContext);
+  const { cart, total } = useContext(CartContext);
 
-   const hayProductos = cart.length > 0;
+  const hayProductos = cart.length > 0;
 
   const nombreCompleto = token && user ? `${user.nombres} ${user.apellidos}` : "";
 
@@ -30,6 +30,7 @@ function CollapsibleExample() {
       expand="lg"
       bg="light"
       className="navbar-vivero shadow-sm sticky-top"
+      style={{ zIndex: 1050, position: 'relative' }}
     >
       <Container>
         {/* LOGO */}
@@ -82,14 +83,12 @@ function CollapsibleExample() {
             {token && user?.rol !== 'admin' && (
               <NavLink
                 to="/cart"
-                className={`nav-link fw-semibold ${
-                  hayProductos ? "text-success" : "text-muted"
-                }`}
+                className={`nav-link fw-semibold ${hayProductos ? "text-success" : "text-muted"
+                  }`}
               >
                 <i
-                  className={`bi ${
-                    hayProductos ? "bi-cart-fill" : "bi-cart"
-                  } me-1`}
+                  className={`bi ${hayProductos ? "bi-cart-fill" : "bi-cart"
+                    } me-1`}
                 ></i>
                 ${total.toLocaleString("es-CL")}
               </NavLink>

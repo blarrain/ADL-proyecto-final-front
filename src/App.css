@@ -71,3 +71,19 @@
   font-weight: 500;
   letter-spacing: 0.5px;
 }
+
+/* Para posicionar los filtros de la tienda */
+
+.sticky-lg-only {
+  position: static;
+  /* No es sticky en móviles */
+}
+
+@media (min-width: 992px) {
+  .sticky-lg-only {
+    position: sticky;
+    top: 1rem;
+    /* Ajusta la distancia al techo */
+    z-index: 1020;
+  }
+}

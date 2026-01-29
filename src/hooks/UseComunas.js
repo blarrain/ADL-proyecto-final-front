@@ -6,7 +6,6 @@ export const useComunas = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000";
 
   useEffect(() => {
-    //fetch("http://localhost:5000/comunas")
     fetch(`${BASE_URL}/comunas`)
       .then((res) => {
         if (!res.ok) throw new Error("Error cargando comunas");

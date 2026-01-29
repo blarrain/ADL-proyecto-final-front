@@ -59,7 +59,7 @@ const StorePage = () => {
 				<Notificacion variant={alerta} mensaje={mensajeAlerta}></Notificacion>
 			)}
 			<Container fluid className='bd-layout py-3'>
-				<aside className='bd-sidebar sticky-top py-3'>
+				<aside className='bd-sidebar sticky-lg-only py-3'>
 					<h2>Filtros</h2>{' '}
 					<Stack as={Form}
 						gap={4}
