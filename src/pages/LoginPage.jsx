@@ -1,4 +1,6 @@
 import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,9 +9,11 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 
+import miLogo from './../assets/img/logoJRB.png';
+
 import Swal from 'sweetalert2';
 import { UserContext } from '../context/UserContext';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
 	const [email, setEmail] = useState('');
@@ -17,10 +21,8 @@ const LoginPage = () => {
 
 	const { login } = useContext(UserContext);
 
-	const navigate = useNavigate();
-
-	const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5000';
-
+/* 	const navigate = useNavigate();
+ */
 	// const verificaDatos = async (e) => {
 	// 	e.preventDefault();
 	// 	const response = await login(email, password);
@@ -62,11 +64,7 @@ const LoginPage = () => {
 						<Row className='g-0'>
 							{/* Imagen */}
 							<Col md={6}>
-								<Image
-									src='./src/assets/img/logoJRB.png'
-									fluid
-									className='h-100'
-								/>
+								<Image src={miLogo} fluid className='h-100' />
 							</Col>
 
 							{/* Formulario */}
@@ -103,9 +101,9 @@ const LoginPage = () => {
 									</Button>
 									<label className='text-center mt-3 w-100'>
 										Si no tienes cuenta puedes{' '}
-										<Card.Link onClick={navigate(`./register`)}>
+										<Card.Link as={Link} to='/register'>
 											{' '}
-											Registrarte
+											Registrarte.
 										</Card.Link>
 									</label>
 								</Form>

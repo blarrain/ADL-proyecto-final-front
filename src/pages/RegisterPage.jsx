@@ -6,6 +6,7 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
+import miLogo from './../assets/img/logoJRB.png';
 
 import Swal from "sweetalert2";
 import InputForm from "../components/Input";
@@ -77,7 +78,7 @@ const RegisterPage = () => {
             <Row className="g-0">
               {/* Imagen */}
               <Col md={4} className="d-flex align-items-center">
-                <Image src="./src/assets/img/logoJRB.png" fluid />
+                <Image src={miLogo} fluid />
               </Col>
 
               {/* Formulario */}

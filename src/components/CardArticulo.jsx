@@ -43,7 +43,7 @@ const CardArticulo = (props) => {
   }, [token, props.id, BASE_URL]);
 
   const verDetalle = (id) => {
-    navigate(`./detail/${id}`);
+    navigate(`/detail/${id}`);
   };
 
   // agregar favorito
