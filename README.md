@@ -2,7 +2,11 @@
 
 Vivero JRB
 
-[**→ Backend**](https://github.com/blarrain/ADL-proyecto-final-back)
+[**→ Deploy**](https://adl-proyecto-final-front.vercel.app/)
+
+[**→ Deploy backend**](https://adl-proyecto-final-back.onrender.com/)
+
+[**→ Proyecto backend** (github) ](https://github.com/blarrain/ADL-proyecto-final-back)
 
 ## 👥 Integrantes
 
