@@ -46,7 +46,7 @@ const CardArticulo = (props) => {
 	}, [token, props.id, BASE_URL]);
 
 	/*   const verDetalle = (id) => {
-    navigate(`/detail/${id}`);
+	navigate(`/detail/${id}`);
   };
  */
 	// agregar favorito
@@ -92,8 +92,6 @@ const CardArticulo = (props) => {
 	};
 
 	const handleFavorito = () => {
-		console.log('Token:', localStorage.getItem('token'));
-		console.log('Artículo:', props.id);
 
 		if (!localStorage.getItem('token')) {
 			Swal.fire('Atención', 'Debes iniciar sesión', 'warning');
