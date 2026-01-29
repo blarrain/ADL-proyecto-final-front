@@ -21,8 +21,8 @@ const LoginPage = () => {
 
 	const { login } = useContext(UserContext);
 
-/* 	const navigate = useNavigate();
- */
+	/* 	const navigate = useNavigate();
+	 */
 	// const verificaDatos = async (e) => {
 	// 	e.preventDefault();
 	// 	const response = await login(email, password);
@@ -103,7 +103,7 @@ const LoginPage = () => {
 										Si no tienes cuenta,{' '}
 										<Card.Link as={Link} to='/register'>
 											{' '}
-											regístrate
+											Regístrate
 										</Card.Link>
 									</label>
 								</Form>
