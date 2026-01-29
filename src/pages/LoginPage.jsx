@@ -1,16 +1,15 @@
 import React, { useContext, useState } from 'react';
-import {
-	Container,
-	Row,
-	Col,
-	Card,
-	Form,
-	Button,
-	Image,
-} from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Image from 'react-bootstrap/Image';
+
 import Swal from 'sweetalert2';
 import { UserContext } from '../context/UserContext';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
 	const [email, setEmail] = useState('');
@@ -18,99 +17,105 @@ const LoginPage = () => {
 
 	const { login } = useContext(UserContext);
 
+	const navigate = useNavigate();
+
+	const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5000';
+
 	// const verificaDatos = async (e) => {
 	// 	e.preventDefault();
 	// 	const response = await login(email, password);
 	// 	alert(response?.message || 'Algo salió mal');
 	// };
 
-
 	const iniciarSesion = async (e) => {
-    e.preventDefault();
+		e.preventDefault();
 
-    if (!email.trim() || !password.trim()) {
-      Swal.fire("Error", "Debe ingresar email y contraseña", "error");
-      return;
-    }
+		if (!email.trim() || !password.trim()) {
+			Swal.fire('Error', 'Debe ingresar email y contraseña', 'error');
+			return;
+		}
 
-    if (password.length < 6) {
-      Swal.fire(
-        "Error",
-        "La contraseña debe tener al menos 6 caracteres",
-        "error",
-      );
-      return;
-    }
+		if (password.length < 6) {
+			Swal.fire(
+				'Error',
+				'La contraseña debe tener al menos 6 caracteres',
+				'error',
+			);
+			return;
+		}
 
-    const result = await login(email, password);
+		const result = await login(email, password);
 
-    if (!result.ok) {
-      Swal.fire("Error", result.message, "error");
-      return;
-    }
+		if (!result.ok) {
+			Swal.fire('Error', result.message, 'error');
+			return;
+		}
 
-    Swal.fire("Bienvenido", result.message, "success");
-  };
+		Swal.fire('Bienvenido', result.message, 'success');
+	};
 
 	return (
-    <Container className="my-5">
-      <Row className="justify-content-center">
-        <Col>
-          <Card className="shadow">
-            <Row className="g-0">
-              {/* Imagen */}
-              <Col md={6}>
-                <Image
-                  src="/src/assets/img/logoJRB.png"
-                  fluid
-                  className="h-100"
-                />
-              </Col>
+		<Container className='my-5'>
+			<Row className='justify-content-center'>
+				<Col>
+					<Card className='shadow'>
+						<Row className='g-0'>
+							{/* Imagen */}
+							<Col md={6}>
+								<Image
+									src='./src/assets/img/logoJRB.png'
+									fluid
+									className='h-100'
+								/>
+							</Col>
 
-              {/* Formulario */}
-              <Col md={6} className="p-4">
-                <h3 className="text-center mb-4">Ingreso de clientes</h3>
+							{/* Formulario */}
+							<Col md={6} className='p-4'>
+								<h3 className='text-center mb-4'>Ingreso de clientes</h3>
 
-                <Form onSubmit={iniciarSesion} autoComplete="off">
-                  <Form.Group className="mb-3">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                      type="email"
-                      name="email"
-                      placeholder="name@example.com"
-                      autoComplete="new-email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </Form.Group>
+								<Form onSubmit={iniciarSesion} autoComplete='off'>
+									<Form.Group className='mb-3'>
+										<Form.Label>Email</Form.Label>
+										<Form.Control
+											type='email'
+											name='email'
+											placeholder='name@example.com'
+											autoComplete='new-email'
+											value={email}
+											onChange={(e) => setEmail(e.target.value)}
+										/>
+									</Form.Group>
 
-                  <Form.Group className="mb-4">
-                    <Form.Label>Contraseña</Form.Label>
-                    <Form.Control
-                      type="password"
-                      name="password"
-                      placeholder="Ingrese contraseña"
-                      autoComplete="new-password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </Form.Group>
+									<Form.Group className='mb-4'>
+										<Form.Label>Contraseña</Form.Label>
+										<Form.Control
+											type='password'
+											name='password'
+											placeholder='Ingrese contraseña'
+											autoComplete='new-password'
+											value={password}
+											onChange={(e) => setPassword(e.target.value)}
+										/>
+									</Form.Group>
 
-                  <Button type="submit" variant="primary" className="w-100">
-                    Iniciar sesión
-                  </Button>
-                  <label className="text-center mt-3 w-100">
-                    Si no tienes cuenta puedes{" "}
-                    <Card.Link href="/register"> Registrarte</Card.Link>
-                  </label>
-                </Form>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
-  );
+									<Button type='submit' variant='primary' className='w-100'>
+										Iniciar sesión
+									</Button>
+									<label className='text-center mt-3 w-100'>
+										Si no tienes cuenta puedes{' '}
+										<Card.Link onClick={navigate(`./register`)}>
+											{' '}
+											Registrarte
+										</Card.Link>
+									</label>
+								</Form>
+							</Col>
+						</Row>
+					</Card>
+				</Col>
+			</Row>
+		</Container>
+	);
 };
 
 export default LoginPage;

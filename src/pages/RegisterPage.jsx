@@ -1,5 +1,12 @@
 import React, { useState, useContext } from "react";
-import { Container, Row, Col, Card, Form, Button, Image } from "react-bootstrap";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Image from 'react-bootstrap/Image';
+
 import Swal from "sweetalert2";
 import InputForm from "../components/Input";
 
@@ -70,7 +77,7 @@ const RegisterPage = () => {
             <Row className="g-0">
               {/* Imagen */}
               <Col md={4} className="d-flex align-items-center">
-                <Image src="/src/assets/img/logoJRB.png" fluid />
+                <Image src="./src/assets/img/logoJRB.png" fluid />
               </Col>
 
               {/* Formulario */}
