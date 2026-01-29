@@ -100,10 +100,10 @@ const LoginPage = () => {
 										Iniciar sesión
 									</Button>
 									<label className='text-center mt-3 w-100'>
-										Si no tienes cuenta puedes{' '}
+										Si no tienes cuenta,{' '}
 										<Card.Link as={Link} to='/register'>
 											{' '}
-											Registrarte.
+											regístrate
 										</Card.Link>
 									</label>
 								</Form>
