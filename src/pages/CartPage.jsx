@@ -12,12 +12,14 @@ import Swal from "sweetalert2";
 import { CartContext } from "../context/CartContext";
 import { UserContext } from "../context/UserContext";
 import { useComunas } from "../hooks/UseComunas.js";
+import { PedidosContext } from "../context/PedidosContext.jsx";
 
 
 
 const CartPage = () => {
   const { cart, sumaCart, restaCart, removeItem, total, clearCart } = useContext(CartContext);
   const { perfil } = useContext(UserContext);
+  const { crearPedido, loading: loadingRegister } = useContext(PedidosContext);
 
   const nombreCompleto = perfil
     ? `${perfil.nombres} ${perfil.apellidos}`
@@ -34,8 +36,16 @@ const CartPage = () => {
     }
   }, [perfil]);
 
+  const [direccionLocal, setDireccionLocal] = useState("");
 
-  const handleCheckout = () => {
+  useEffect(() => {
+    if (perfil?.direccion) {
+      setDireccionLocal(perfil.direccion);
+    }
+  }, [perfil]);
+
+  const handleCheckout = async () => {
+
     if (!perfil) {
       Swal.fire("Debes iniciar sesión", "", "warning");
       return;
@@ -50,6 +60,24 @@ const CartPage = () => {
       return;
     }
 
+    const payload = {
+      id_usuario: perfil.id_usuario,
+      comuna: comunaSeleccionada,
+      direccion: direccionLocal,
+      total: total,
+      detalles: cart
+    };
+
+    // console.log(payload)
+
+    const result = await crearPedido(payload);
+
+    if (!result.ok) {
+      Swal.fire("Error", result.message, "error");
+      return;
+    }
+
+
     Swal.fire({
       icon: "success",
       title: "Pedido generado",
@@ -61,13 +89,7 @@ const CartPage = () => {
   };
 
 
-  const [direccionLocal, setDireccionLocal] = useState("");
 
-  useEffect(() => {
-    if (perfil?.direccion) {
-      setDireccionLocal(perfil.direccion);
-    }
-  }, [perfil]);
 
 
   return (
