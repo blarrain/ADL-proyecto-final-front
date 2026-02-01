@@ -89,6 +89,15 @@ const CartProvider = ({ children }) => {
         return prev;
       }
 
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Aumento el carrito",
+        showConfirmButton: false,
+        timer: 1000,
+      });
+
       return prev.map((item) =>
         item.id_articulo === id_articulo && item.stock > item.quantity
           ? { ...item, quantity: item.quantity + 1 }
@@ -98,6 +107,15 @@ const CartProvider = ({ children }) => {
   };
 
   const restaCart = (id_articulo) => {
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "info",
+      title: "Se redujo el carrito",
+      showConfirmButton: false,
+      timer: 1000,
+    });
+
     setCart((prev) =>
       prev
         .map((item) =>
@@ -111,6 +129,15 @@ const CartProvider = ({ children }) => {
 
   const removeItem = (id_articulo) => {
     setCart((prev) => prev.filter((item) => item.id_articulo !== id_articulo));
+
+      Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "info",
+      title: "Se elimino el articulo",
+      showConfirmButton: false,
+      timer: 1000,
+    });
   };
 
   const total = cart.reduce(

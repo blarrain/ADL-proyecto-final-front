@@ -24,6 +24,34 @@ const ArticleForm = (props) => {
 	const [descripcion, setDescripcion] = useState('');
 	const [imgUrl, setImgUrl] = useState('');
 
+
+	// validaciones
+	const nombreValido = (texto) => {
+    const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]{3,60}$/;
+    return regex.test(texto.trim());
+  };
+
+  const descripcionValida = (texto) => texto.trim().length >= 10;
+
+  const precioValido = (valor) => Number(valor) > 0;
+
+  const stockValido = (valor) =>
+    Number.isInteger(Number(valor)) && Number(valor) >= 0;
+
+  const imagenValida = (url) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const normalizarUrlImagen = (url) => {
+  return url.split("?")[0];
+};
+
+
 	const getArticulo = async (id) => {
 		const response = await fetch(`${BASE_URL}/articulos/${id}`);
 		if (!response.ok) {
@@ -57,23 +85,65 @@ const ArticleForm = (props) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+		if (!nombreValido(nombre)) {
+      Swal.fire(
+        "Error",
+        "El nombre debe tener al menos 3 letras y solo caracteres válidos",
+        "error",
+      );
+      return;
+    }
+
+    if (!descripcionValida(descripcion)) {
+      Swal.fire(
+        "Error",
+        "La descripción debe tener al menos 10 caracteres",
+        "error",
+      );
+      return;
+    }
+
+    if (!precioValido(precio)) {
+      Swal.fire("Error", "El precio debe ser mayor a 0", "error");
+      return;
+    }
+
+    if (!stockValido(stock)) {
+      Swal.fire(
+        "Error",
+        "El stock debe ser 0 o un número entero positivo",
+        "error",
+      );
+      return;
+    }
+
+    if (!imagenValida(imgUrl)) {
+      Swal.fire(
+        "Error",
+        "La URL debe ser una imagen válida (.jpg, .png, .webp)",
+        "error",
+      );
+      return;
+    }
+
 		if (!props.id) {
 			await createArticulo(
-				nombre,
-				descripcion,
-				precio,
-				stock,
-				imgUrl,
+				nombre.trim(),
+				descripcion.trim(),
+				Number(precio),
+				Number(stock),
+				normalizarUrlImagen(imgUrl.trim()),
 				idCategoria,
 			);
 		} else {
 			await updateArticulo(
 				props.id,
-				nombre,
-				descripcion,
-				precio,
-				stock,
-				imgUrl,
+				nombre.trim(),
+				descripcion.trim(),
+				Number(precio),
+				Number(stock),
+				normalizarUrlImagen(imgUrl.trim()),
 				idCategoria,
 			);
 		}
