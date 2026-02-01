@@ -36,6 +36,21 @@ const CartProvider = ({ children }) => {
         (item) => item.id_articulo === articulo.id_articulo
       );
 
+      const cantidadActual = existe ? existe.quantity : 0;
+
+      if (cantidadActual + 1 > articulo.stock) {
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "warning",
+          title: `Stock Máximo ${articulo.stock}`,
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+        });
+        return prev;
+      }
+
       if (existe) {
         return prev.map((item) =>
           item.id_articulo === articulo.id_articulo

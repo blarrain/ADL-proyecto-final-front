@@ -17,8 +17,10 @@ const CardArticulo = (props) => {
 	const token = localStorage.getItem('token');
 	const price = Number(props.price);
 
-	const cantEnCarro =
-		cart.find((e) => e.id_articulo === Number(props.id))?.quantity || 0;
+	const cantEnCarro = cart.find((e) => e.id_articulo === Number(props.id))?.quantity || 0;
+
+	const stockDisponible = props.stock - cantEnCarro; //variable para disminuir vizualmente rebaja en el stock
+
 
 	// revisar si ya es favorito
 	const [esFavorito, setEsFavorito] = useState(false);
@@ -142,7 +144,8 @@ const CardArticulo = (props) => {
 					${price.toLocaleString('es-CL')}
 				</Card.Text>
 				<Card.Text className='text-secondary fw-light'>
-					Stock: {props.stock} unidades
+					{/* Stock: {props.stock} unidades */}
+					Stock: {stockDisponible} unidades
 				</Card.Text>
 				<Card.Link as={Link} to={`/detail/${props.id}`} className='py-3'>
 					Ver detalles{' '}
@@ -159,7 +162,7 @@ const CardArticulo = (props) => {
 					</Button>
 
 					{cantEnCarro === 0 && (
-						<Button variant='primary' onClick={handleAddToCart}>
+						<Button variant='primary' onClick={handleAddToCart} disabled={stockDisponible <= 0}>
 							Agregar al carrito <i className='bi bi-cart-plus'></i>
 						</Button>
 					)}
@@ -177,6 +180,7 @@ const CardArticulo = (props) => {
 								title='Agregar 1 al carrito'
 								variant='outline-primary'
 								onClick={() => sumaCart(props.id)}
+								disabled={stockDisponible <= 0}
 							>
 								<i className='bi bi-plus'></i>
 							</Button>

@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Image from 'react-bootstrap/Image';
-import miLogo from './../assets/img/logoJRB.png';
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
+import miLogo from "./../assets/img/logoJRB.png";
 
 import Swal from "sweetalert2";
 import InputForm from "../components/Input";
@@ -16,10 +16,10 @@ import { useNavigate } from "react-router-dom";
 
 import { useComunas } from "../hooks/UseComunas.js";
 
-
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const { registerUser, loading:loadingRegister  } = useContext(RegisterContext);
+  const { registerUser, loading: loadingRegister } =
+    useContext(RegisterContext);
   const comunas = useComunas();
 
   const [email, setEmail] = useState("");
@@ -31,11 +31,72 @@ const RegisterPage = () => {
   const [comuna, setComuna] = useState("");
   const [direccion, setDireccion] = useState("");
 
+  // Edad mínima
+  const esMayorDe15 = (fecha) => {
+    if (!fecha) return false;
+
+    const hoy = new Date();
+    const nacimiento = new Date(fecha);
+
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const mes = hoy.getMonth() - nacimiento.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+      edad--;
+    }
+
+    return edad >= 15;
+  };
+
+  // Validar nombres/apellidos
+  const nombreValido = (texto) => {
+    if (!texto) return false;
+
+    const regex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,50}$/;
+    return regex.test(texto.trim());
+  };
+
   const cargarDatos = async (e) => {
     e.preventDefault();
 
-    if (!email || !password || !nombres || !apellidos) {
+    if (!email || !password || !nombres || !apellidos || !fecha_nacimiento) {
       Swal.fire("Error", "Completa los campos obligatorios", "error");
+      return;
+    }
+
+    if (!nombreValido(nombres)) {
+    Swal.fire(
+      "Error",
+      "El nombre debe contener solo letras y tener al menos 2 caracteres",
+      "error"
+    );
+    return;
+  }
+
+  if (!nombreValido(apellidos)) {
+    Swal.fire(
+      "Error",
+      "El apellido debe contener solo letras y tener al menos 2 caracteres",
+      "error"
+    );
+    return;
+  }
+
+  if (!esMayorDe15(fecha_nacimiento)) {
+    Swal.fire(
+      "Error",
+      "Debes tener al menos 15 años para registrarte",
+      "error"
+    );
+    return;
+  }
+
+    if (password.length < 6) {
+      Swal.fire(
+        "Error",
+        "La contraseña debe tener al menos 6 caracteres",
+        "error",
+      );
       return;
     }
 
@@ -44,12 +105,11 @@ const RegisterPage = () => {
       return;
     }
 
-
     const payload = {
       email,
       password,
-      nombres,
-      apellidos,
+      nombres : nombres.trim(),
+      apellidos: apellidos.trim(),
       fecha_nacimiento,
       telefono,
       comuna,
@@ -68,7 +128,6 @@ const RegisterPage = () => {
 
     navigate("/login");
   };
-
 
   return (
     <Container className="my-5">
@@ -193,4 +252,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage 
+export default RegisterPage;
