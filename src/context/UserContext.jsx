@@ -59,13 +59,10 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const cargarPerfil = async () => {
+
       if (!token) {
         console.log("❌ No hay token en frontend");
         setPerfil(null);
-        return;
-      }
-
-      if (perfil) {
         return;
       }
 
@@ -76,8 +73,8 @@ const UserProvider = ({ children }) => {
           },
         });
 
-        const data = await res.json();
         if (!res.ok) throw new Error("Error cargando perfil");
+        const data = await res.json();
 
         setPerfil(data.usuario);
       } catch (error) {
@@ -87,8 +84,8 @@ const UserProvider = ({ children }) => {
     };
 
     cargarPerfil();
-  }, [token, BASE_URL, perfil]);
-
+  }, [token, BASE_URL]);
+  
   // Login
   const login = async (email, password) => {
     try {
@@ -127,6 +124,7 @@ const UserProvider = ({ children }) => {
   const logout = () => {
     setToken(null);
     setUser(null);
+    setPerfil(null);
     navigate("/login");
   };
 
@@ -137,30 +135,30 @@ const UserProvider = ({ children }) => {
     }));
   };
 
-  const updatePerfil = (updatedFields) => {
-    setPerfil((prev) => ({
-      ...prev,
-      ...updatedFields,
-    }));
+  
+const updatePerfil = (usuarioActualizado) => {
+  setPerfil((prev) => ({
+    ...prev,
+    ...usuarioActualizado,
+  }));
 
-    // sincronizar user (para Navbar)
-    setUser((prev) => ({
-      ...prev,
-      ...updatedFields,
-    }));
+  setUser((prev) => ({
+    ...prev,
+    ...usuarioActualizado,
+  }));
 
-    
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser) {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          ...storedUser,
-          ...updatedFields,
-        }),
-      );
-    }
-  };
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  if (storedUser) {
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        ...storedUser,
+        ...usuarioActualizado,
+      })
+    );
+  }
+};
+
 
   return (
     <UserContext.Provider

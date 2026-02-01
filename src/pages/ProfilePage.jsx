@@ -13,6 +13,13 @@ import InputForm from "../components/Input.jsx";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000";
 
+const nombreValido = (texto) =>
+  /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,40}$/.test(texto.trim());
+
+const direccionValida = (texto) =>
+  texto.trim().length >= 5;
+
+
 const ProfilePage = () => {
   const { perfil, updatePerfil, logout } = useContext(UserContext);
   const comunas = useComunas();
@@ -48,6 +55,30 @@ const ProfilePage = () => {
   const handleSave = async () => {
     if (!perfil?.id_usuario) return;
 
+     if (!nombreValido(formData.nombres)) {
+    Swal.fire("Error", "Nombre inválido", "error");
+    return;
+  }
+
+  if (!nombreValido(formData.apellidos)) {
+    Swal.fire("Error", "Apellido inválido", "error");
+    return;
+  }
+
+  if (!formData.comuna) {
+    Swal.fire("Error", "Debes seleccionar una comuna", "error");
+    return;
+  }
+
+  if (!direccionValida(formData.direccion)) {
+    Swal.fire(
+      "Error",
+      "La dirección debe tener al menos 5 caracteres",
+      "error"
+    );
+    return;
+  }
+
     try {
       const res = await fetch(
         `${BASE_URL}/usuarios/${perfil.id_usuario}`,
@@ -68,7 +99,11 @@ const ProfilePage = () => {
       }
 
       // sincronizar contexto con backend
-      updatePerfil(data.usuario);
+      updatePerfil({
+        ...perfil,
+        ...formData,
+        ...data.usuario, // si backend trae algo nuevo, gana
+      });
 
       Swal.fire("Perfil actualizado", "", "success");
       setEditMode(false);
