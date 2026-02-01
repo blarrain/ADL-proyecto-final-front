@@ -16,6 +16,8 @@ import DetailArticle from './pages/DetailArticle';
 import FavoritesPages from './pages/FavoritesPage';
 import NotFoundPage from './pages/NotFoundPage';
 
+// para mantener la pagina que inicie desde top 0
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
 	const { user , token} = useContext(UserContext);
@@ -23,6 +25,7 @@ function App() {
 	return (
 		<>
 			<Navbar />
+			<ScrollToTop />
 			<Routes>
 
 				{/* Publicas */}

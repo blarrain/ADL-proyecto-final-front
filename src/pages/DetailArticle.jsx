@@ -28,6 +28,9 @@ const DetailArticle = () => {
 	const cantEnCarro =
 		cart.find((e) => e.id_articulo === Number(id))?.quantity || 0;
 
+	const stockDisponible = article ? article.stock - cantEnCarro : 0; // solo visual para disminuir el stock
+
+
 	const getArticulo = async (id) => {
 		const response = await fetch(`${BASE_URL}/articulos/${id}`);
 		const articleData = await response.json();
@@ -102,7 +105,8 @@ const DetailArticle = () => {
 						<p className='fw-light fs-5'>{article.descripcion}</p>
 						<p className='text-secondary fw-light'>
 							<strong>Stock: </strong>
-							{article.stock} unidades
+							{/* {article.stock} unidades */}
+							{stockDisponible} unidades
 						</p>
 						<p className='text-center h4 my-4'>
 							${Number(article.precio).toLocaleString('es-CL')}
@@ -113,6 +117,7 @@ const DetailArticle = () => {
 									variant='primary'
 									size='lg'
 									onClick={handleAddToCart}
+									 disabled={stockDisponible <= 0}
 								>
 									Agregar al carrito <i className='bi bi-cart-plus'></i>
 								</Button>
@@ -131,6 +136,7 @@ const DetailArticle = () => {
 										title='Agregar 1 al carrito'
 										variant='outline-primary'
 										onClick={() => sumaCart(Number(id))}
+										 disabled={stockDisponible <= 0}
 									>
 										<i class="bi bi-plus"></i>
 									</Button>
