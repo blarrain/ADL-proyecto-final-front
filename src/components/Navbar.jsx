@@ -29,8 +29,8 @@ function CollapsibleExample() {
     <Navbar
       expand="lg"
       bg="light"
-      className="navbar-vivero shadow-sm sticky-top"
-      style={{ zIndex: 1050, position: 'relative' }}
+      className="navbar-vivero shadow-sm fixed-top"
+      style={{ zIndex: 1050 }}
     >
       <Container>
         {/* LOGO */}
